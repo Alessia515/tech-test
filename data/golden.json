@@ -1,0 +1,333 @@
+[
+  {
+    "id": "count",
+    "question": "How many trips had pickups in January 2024?",
+    "sql": "SELECT count(*) AS trips FROM trips WHERE tpep_pickup_datetime >= TIMESTAMP '2024-01-01' AND tpep_pickup_datetime < TIMESTAMP '2024-02-01'",
+    "expected": [
+      {
+        "trips": "2964606"
+      }
+    ]
+  },
+  {
+    "id": "daily",
+    "question": "How many trips were picked up each day in January?",
+    "sql": "SELECT CAST(tpep_pickup_datetime AS DATE)::VARCHAR AS day, count(*) AS trips FROM trips WHERE tpep_pickup_datetime >= TIMESTAMP '2024-01-01' AND tpep_pickup_datetime < TIMESTAMP '2024-02-01' GROUP BY 1 ORDER BY 1",
+    "expected": [
+      {
+        "day": "2024-01-01",
+        "trips": "81013"
+      },
+      {
+        "day": "2024-01-02",
+        "trips": "75519"
+      },
+      {
+        "day": "2024-01-03",
+        "trips": "82427"
+      },
+      {
+        "day": "2024-01-04",
+        "trips": "102901"
+      },
+      {
+        "day": "2024-01-05",
+        "trips": "103178"
+      },
+      {
+        "day": "2024-01-06",
+        "trips": "97117"
+      },
+      {
+        "day": "2024-01-07",
+        "trips": "67543"
+      },
+      {
+        "day": "2024-01-08",
+        "trips": "80034"
+      },
+      {
+        "day": "2024-01-09",
+        "trips": "93962"
+      },
+      {
+        "day": "2024-01-10",
+        "trips": "95000"
+      },
+      {
+        "day": "2024-01-11",
+        "trips": "105010"
+      },
+      {
+        "day": "2024-01-12",
+        "trips": "103655"
+      },
+      {
+        "day": "2024-01-13",
+        "trips": "104758"
+      },
+      {
+        "day": "2024-01-14",
+        "trips": "94420"
+      },
+      {
+        "day": "2024-01-15",
+        "trips": "77033"
+      },
+      {
+        "day": "2024-01-16",
+        "trips": "93057"
+      },
+      {
+        "day": "2024-01-17",
+        "trips": "110365"
+      },
+      {
+        "day": "2024-01-18",
+        "trips": "110358"
+      },
+      {
+        "day": "2024-01-19",
+        "trips": "95951"
+      },
+      {
+        "day": "2024-01-20",
+        "trips": "108768"
+      },
+      {
+        "day": "2024-01-21",
+        "trips": "84502"
+      },
+      {
+        "day": "2024-01-22",
+        "trips": "85650"
+      },
+      {
+        "day": "2024-01-23",
+        "trips": "99891"
+      },
+      {
+        "day": "2024-01-24",
+        "trips": "105120"
+      },
+      {
+        "day": "2024-01-25",
+        "trips": "110318"
+      },
+      {
+        "day": "2024-01-26",
+        "trips": "105804"
+      },
+      {
+        "day": "2024-01-27",
+        "trips": "110515"
+      },
+      {
+        "day": "2024-01-28",
+        "trips": "92837"
+      },
+      {
+        "day": "2024-01-29",
+        "trips": "84547"
+      },
+      {
+        "day": "2024-01-30",
+        "trips": "101233"
+      },
+      {
+        "day": "2024-01-31",
+        "trips": "102120"
+      }
+    ]
+  },
+  {
+    "id": "distance",
+    "question": "What was the average recorded trip distance in January, including zero and anomalous values?",
+    "sql": "SELECT avg(trip_distance) AS average_miles FROM trips WHERE tpep_pickup_datetime >= TIMESTAMP '2024-01-01' AND tpep_pickup_datetime < TIMESTAMP '2024-02-01'",
+    "expected": [
+      {
+        "average_miles": 3.6521704907830275
+      }
+    ],
+    "tolerance": 0.000001
+  },
+  {
+    "id": "fare",
+    "question": "What was the total metered fare in January, including negative adjustments?",
+    "sql": "SELECT sum(fare_amount) AS fare_dollars FROM trips WHERE tpep_pickup_datetime >= TIMESTAMP '2024-01-01' AND tpep_pickup_datetime < TIMESTAMP '2024-02-01'",
+    "expected": [
+      {
+        "fare_dollars": 53881922.65999184
+      }
+    ],
+    "tolerance": 0.01
+  },
+  {
+    "id": "cards",
+    "question": "How many January trips were paid by credit card?",
+    "sql": "SELECT count(*) AS trips FROM trips WHERE tpep_pickup_datetime >= TIMESTAMP '2024-01-01' AND tpep_pickup_datetime < TIMESTAMP '2024-02-01' AND payment_type = 1",
+    "expected": [
+      {
+        "trips": "2319036"
+      }
+    ]
+  },
+  {
+    "id": "tips",
+    "question": "For January card trips with positive fares, what percentage of total fare was recorded as tips?",
+    "sql": "SELECT 100.0 * sum(tip_amount) / sum(fare_amount) AS tip_percent FROM trips WHERE tpep_pickup_datetime >= TIMESTAMP '2024-01-01' AND tpep_pickup_datetime < TIMESTAMP '2024-02-01' AND payment_type = 1 AND fare_amount > 0",
+    "expected": [
+      {
+        "tip_percent": 22.46768389447392
+      }
+    ],
+    "tolerance": 0.000001
+  },
+  {
+    "id": "pickups",
+    "question": "What were the five busiest pickup zone IDs in January? Break ties by zone ID ascending.",
+    "sql": "SELECT PULocationID AS zone_id, count(*) AS trips FROM trips WHERE tpep_pickup_datetime >= TIMESTAMP '2024-01-01' AND tpep_pickup_datetime < TIMESTAMP '2024-02-01' GROUP BY 1 ORDER BY trips DESC, zone_id ASC LIMIT 5",
+    "expected": [
+      {
+        "zone_id": 132,
+        "trips": "145240"
+      },
+      {
+        "zone_id": 161,
+        "trips": "143469"
+      },
+      {
+        "zone_id": 237,
+        "trips": "142707"
+      },
+      {
+        "zone_id": 236,
+        "trips": "136464"
+      },
+      {
+        "zone_id": 162,
+        "trips": "106717"
+      }
+    ]
+  },
+  {
+    "id": "hours",
+    "question": "How many January pickups occurred in each hour of the day?",
+    "sql": "SELECT CAST(extract(hour FROM tpep_pickup_datetime) AS INTEGER) AS hour, count(*) AS trips FROM trips WHERE tpep_pickup_datetime >= TIMESTAMP '2024-01-01' AND tpep_pickup_datetime < TIMESTAMP '2024-02-01' GROUP BY 1 ORDER BY 1",
+    "expected": [
+      {
+        "hour": 0,
+        "trips": "79090"
+      },
+      {
+        "hour": 1,
+        "trips": "53627"
+      },
+      {
+        "hour": 2,
+        "trips": "37517"
+      },
+      {
+        "hour": 3,
+        "trips": "24811"
+      },
+      {
+        "hour": 4,
+        "trips": "16742"
+      },
+      {
+        "hour": 5,
+        "trips": "18764"
+      },
+      {
+        "hour": 6,
+        "trips": "41429"
+      },
+      {
+        "hour": 7,
+        "trips": "83719"
+      },
+      {
+        "hour": 8,
+        "trips": "117209"
+      },
+      {
+        "hour": 9,
+        "trips": "128970"
+      },
+      {
+        "hour": 10,
+        "trips": "138778"
+      },
+      {
+        "hour": 11,
+        "trips": "150542"
+      },
+      {
+        "hour": 12,
+        "trips": "164559"
+      },
+      {
+        "hour": 13,
+        "trips": "169903"
+      },
+      {
+        "hour": 14,
+        "trips": "182898"
+      },
+      {
+        "hour": 15,
+        "trips": "189359"
+      },
+      {
+        "hour": 16,
+        "trips": "190201"
+      },
+      {
+        "hour": 17,
+        "trips": "206257"
+      },
+      {
+        "hour": 18,
+        "trips": "212788"
+      },
+      {
+        "hour": 19,
+        "trips": "184032"
+      },
+      {
+        "hour": 20,
+        "trips": "159989"
+      },
+      {
+        "hour": 21,
+        "trips": "160888"
+      },
+      {
+        "hour": 22,
+        "trips": "143259"
+      },
+      {
+        "hour": 23,
+        "trips": "109275"
+      }
+    ]
+  },
+  {
+    "id": "long-fare",
+    "question": "What was the average metered fare for January trips over ten miles?",
+    "sql": "SELECT avg(fare_amount) AS average_fare FROM trips WHERE tpep_pickup_datetime >= TIMESTAMP '2024-01-01' AND tpep_pickup_datetime < TIMESTAMP '2024-02-01' AND trip_distance > 10",
+    "expected": [
+      {
+        "average_fare": 62.8809445700366
+      }
+    ],
+    "tolerance": 0.000001
+  },
+  {
+    "id": "empty",
+    "question": "List pickup zone IDs for January pickups that occurred on or after February 1, 2024.",
+    "sql": "SELECT PULocationID AS zone_id FROM trips WHERE tpep_pickup_datetime >= TIMESTAMP '2024-01-01' AND tpep_pickup_datetime < TIMESTAMP '2024-02-01' AND tpep_pickup_datetime >= TIMESTAMP '2024-02-01'",
+    "expected": []
+  }
+]

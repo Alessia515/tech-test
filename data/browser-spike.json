@@ -1,0 +1,512 @@
+{
+  "version": "v1.5.4",
+  "loadMs": 3161,
+  "summary": [
+    {
+      "raw_rows": "2964624",
+      "january_rows": "2964606",
+      "earliest_pickup": "2002-12-31 22:59:39",
+      "latest_pickup": "2024-02-01 00:01:15"
+    }
+  ],
+  "schema": [
+    {
+      "column_name": "VendorID",
+      "column_type": "INTEGER",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "tpep_pickup_datetime",
+      "column_type": "TIMESTAMP",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "tpep_dropoff_datetime",
+      "column_type": "TIMESTAMP",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "passenger_count",
+      "column_type": "BIGINT",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "trip_distance",
+      "column_type": "DOUBLE",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "RatecodeID",
+      "column_type": "BIGINT",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "store_and_fwd_flag",
+      "column_type": "VARCHAR",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "PULocationID",
+      "column_type": "INTEGER",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "DOLocationID",
+      "column_type": "INTEGER",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "payment_type",
+      "column_type": "BIGINT",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "fare_amount",
+      "column_type": "DOUBLE",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "extra",
+      "column_type": "DOUBLE",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "mta_tax",
+      "column_type": "DOUBLE",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "tip_amount",
+      "column_type": "DOUBLE",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "tolls_amount",
+      "column_type": "DOUBLE",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "improvement_surcharge",
+      "column_type": "DOUBLE",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "total_amount",
+      "column_type": "DOUBLE",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "congestion_surcharge",
+      "column_type": "DOUBLE",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "Airport_fee",
+      "column_type": "DOUBLE",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    }
+  ],
+  "guards": [
+    {
+      "sql": "SELECT * FROM read_parquet('https://example.com/probe.parquet')",
+      "blocked": true,
+      "error": "Error: Permission Error: Cannot access file \"https://example.com/probe.parquet\" - file system operations are disabled by configuration\n\nLINE 1: SELECT * FROM read_parquet('https://example.com/probe.parquet')\n                      ^"
+    },
+    {
+      "sql": "SET enable_external_access = true",
+      "blocked": true,
+      "error": "Error: Invalid Input Error: Cannot change configuration option \"enable_external_access\" - the configuration has been locked"
+    }
+  ],
+  "referenceQueries": [
+    {
+      "id": "count",
+      "passed": true,
+      "rows": 1,
+      "actual": [
+        {
+          "trips": "2964606"
+        }
+      ]
+    },
+    {
+      "id": "daily",
+      "passed": true,
+      "rows": 31,
+      "actual": [
+        {
+          "day": "2024-01-01",
+          "trips": "81013"
+        },
+        {
+          "day": "2024-01-02",
+          "trips": "75519"
+        },
+        {
+          "day": "2024-01-03",
+          "trips": "82427"
+        },
+        {
+          "day": "2024-01-04",
+          "trips": "102901"
+        },
+        {
+          "day": "2024-01-05",
+          "trips": "103178"
+        },
+        {
+          "day": "2024-01-06",
+          "trips": "97117"
+        },
+        {
+          "day": "2024-01-07",
+          "trips": "67543"
+        },
+        {
+          "day": "2024-01-08",
+          "trips": "80034"
+        },
+        {
+          "day": "2024-01-09",
+          "trips": "93962"
+        },
+        {
+          "day": "2024-01-10",
+          "trips": "95000"
+        },
+        {
+          "day": "2024-01-11",
+          "trips": "105010"
+        },
+        {
+          "day": "2024-01-12",
+          "trips": "103655"
+        },
+        {
+          "day": "2024-01-13",
+          "trips": "104758"
+        },
+        {
+          "day": "2024-01-14",
+          "trips": "94420"
+        },
+        {
+          "day": "2024-01-15",
+          "trips": "77033"
+        },
+        {
+          "day": "2024-01-16",
+          "trips": "93057"
+        },
+        {
+          "day": "2024-01-17",
+          "trips": "110365"
+        },
+        {
+          "day": "2024-01-18",
+          "trips": "110358"
+        },
+        {
+          "day": "2024-01-19",
+          "trips": "95951"
+        },
+        {
+          "day": "2024-01-20",
+          "trips": "108768"
+        },
+        {
+          "day": "2024-01-21",
+          "trips": "84502"
+        },
+        {
+          "day": "2024-01-22",
+          "trips": "85650"
+        },
+        {
+          "day": "2024-01-23",
+          "trips": "99891"
+        },
+        {
+          "day": "2024-01-24",
+          "trips": "105120"
+        },
+        {
+          "day": "2024-01-25",
+          "trips": "110318"
+        },
+        {
+          "day": "2024-01-26",
+          "trips": "105804"
+        },
+        {
+          "day": "2024-01-27",
+          "trips": "110515"
+        },
+        {
+          "day": "2024-01-28",
+          "trips": "92837"
+        },
+        {
+          "day": "2024-01-29",
+          "trips": "84547"
+        },
+        {
+          "day": "2024-01-30",
+          "trips": "101233"
+        },
+        {
+          "day": "2024-01-31",
+          "trips": "102120"
+        }
+      ]
+    },
+    {
+      "id": "distance",
+      "passed": true,
+      "rows": 1,
+      "actual": [
+        {
+          "average_miles": 3.6521704907830275
+        }
+      ]
+    },
+    {
+      "id": "fare",
+      "passed": true,
+      "rows": 1,
+      "actual": [
+        {
+          "fare_dollars": 53881922.65999184
+        }
+      ]
+    },
+    {
+      "id": "cards",
+      "passed": true,
+      "rows": 1,
+      "actual": [
+        {
+          "trips": "2319036"
+        }
+      ]
+    },
+    {
+      "id": "tips",
+      "passed": true,
+      "rows": 1,
+      "actual": [
+        {
+          "tip_percent": 22.46768389447392
+        }
+      ]
+    },
+    {
+      "id": "pickups",
+      "passed": true,
+      "rows": 5,
+      "actual": [
+        {
+          "zone_id": 132,
+          "trips": "145240"
+        },
+        {
+          "zone_id": 161,
+          "trips": "143469"
+        },
+        {
+          "zone_id": 237,
+          "trips": "142707"
+        },
+        {
+          "zone_id": 236,
+          "trips": "136464"
+        },
+        {
+          "zone_id": 162,
+          "trips": "106717"
+        }
+      ]
+    },
+    {
+      "id": "hours",
+      "passed": true,
+      "rows": 24,
+      "actual": [
+        {
+          "hour": 0,
+          "trips": "79090"
+        },
+        {
+          "hour": 1,
+          "trips": "53627"
+        },
+        {
+          "hour": 2,
+          "trips": "37517"
+        },
+        {
+          "hour": 3,
+          "trips": "24811"
+        },
+        {
+          "hour": 4,
+          "trips": "16742"
+        },
+        {
+          "hour": 5,
+          "trips": "18764"
+        },
+        {
+          "hour": 6,
+          "trips": "41429"
+        },
+        {
+          "hour": 7,
+          "trips": "83719"
+        },
+        {
+          "hour": 8,
+          "trips": "117209"
+        },
+        {
+          "hour": 9,
+          "trips": "128970"
+        },
+        {
+          "hour": 10,
+          "trips": "138778"
+        },
+        {
+          "hour": 11,
+          "trips": "150542"
+        },
+        {
+          "hour": 12,
+          "trips": "164559"
+        },
+        {
+          "hour": 13,
+          "trips": "169903"
+        },
+        {
+          "hour": 14,
+          "trips": "182898"
+        },
+        {
+          "hour": 15,
+          "trips": "189359"
+        },
+        {
+          "hour": 16,
+          "trips": "190201"
+        },
+        {
+          "hour": 17,
+          "trips": "206257"
+        },
+        {
+          "hour": 18,
+          "trips": "212788"
+        },
+        {
+          "hour": 19,
+          "trips": "184032"
+        },
+        {
+          "hour": 20,
+          "trips": "159989"
+        },
+        {
+          "hour": 21,
+          "trips": "160888"
+        },
+        {
+          "hour": 22,
+          "trips": "143259"
+        },
+        {
+          "hour": 23,
+          "trips": "109275"
+        }
+      ]
+    },
+    {
+      "id": "long-fare",
+      "passed": true,
+      "rows": 1,
+      "actual": [
+        {
+          "average_fare": 62.8809445700366
+        }
+      ]
+    },
+    {
+      "id": "empty",
+      "passed": true,
+      "rows": 0,
+      "actual": []
+    }
+  ],
+  "external": [
+    "https://extensions.duckdb.org/v1.5.4/wasm_eh/parquet.duckdb_extension.wasm"
+  ],
+  "errors": [],
+  "assertions": "6 passed"
+}

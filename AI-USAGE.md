@@ -1,0 +1,9 @@
+# AI usage — ongoing record
+
+Used Codex to read the brief, inspect tooling, research official TLC/DuckDB/Cloudflare documentation, draft the initial plan, and implement the Step 3 data-loading spike and verification scripts. The candidate directs progress and reviews each explained step before moving on. PLAN.md was committed first, before application code.
+
+Handed over implementation of the React spike, DuckDB initialization, reproducible dataset download, and reference checks. The candidate has not yet completed a code walkthrough; understanding and review remain part of the process rather than something this file claims already happened.
+
+A concrete wrong assumption: the agent wrote "All assets are served locally" after bundling the engine worker/WASM files. Browser request inspection found DuckDB automatically fetching its Parquet extension from extensions.duckdb.org. The initial no-external-request assertion failed. We inspected the exact URL and timing, kept the startup dependency explicit, corrected the code comment/documentation, and changed the check to allow only that exact pinned-version extension path. External SQL reads are still tested for rejection after initialization. Offline startup is listed as a limitation instead of claiming the first assertion passed.
+
+The agent also initially used a Windows filesystem path as an ESM import in a temporary browser harness; Node rejected the c: URL scheme. The final portable harness imports Playwright by package name. No AI mistakes or completed model verification results have been fabricated. Update this record with later rejected suggestions, rewrites, and candidate review as work proceeds.
