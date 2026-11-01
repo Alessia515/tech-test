@@ -1,6 +1,44 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { compareResults } from "../src/compare-results.ts";
+test("IDs-only ranking answers satisfy an IDs-only question; supplied counts still must match", () => {
+  const expected = {
+    columns: ["zone_id", "trips"],
+    rows: [
+      [132, "145240"],
+      [161, "143469"],
+    ],
+    tolerance: 0,
+    optionalColumns: ["trips"],
+  };
+  assert.equal(
+    compareResults(expected, {
+      columns: [{ name: "PULocationID", type: "Int32" }],
+      rows: [[132], [161]],
+    }).passed,
+    true,
+  );
+  assert.equal(
+    compareResults(expected, {
+      columns: [{ name: "PULocationID", type: "Int32" }],
+      rows: [[161], [132]],
+    }).passed,
+    false,
+  );
+  assert.equal(
+    compareResults(expected, {
+      columns: [
+        { name: "PULocationID", type: "Int32" },
+        { name: "n", type: "Int64" },
+      ],
+      rows: [
+        [132, "1"],
+        [161, "2"],
+      ],
+    }).passed,
+    false,
+  );
+});
 test("aliases and one global column permutation do not cause false failures", () => {
   assert.equal(
     compareResults(

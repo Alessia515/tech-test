@@ -1,5 +1,5 @@
 import golden from "../data/golden.json";
-import baseline from "../data/evaluation-baseline.json";
+import baseline from "../data/evaluation-revised-baseline.json";
 import { loadDatabase } from "./database";
 import { compareResults } from "./compare-results";
 import type { ObservedTable } from "./compare-results";
@@ -160,6 +160,7 @@ async function evaluateOne(
         rows: expected.map((record) => Object.values(record)),
         tolerance: reference.tolerance ?? 0,
         unordered: ["daily", "hours"].includes(reference.id),
+        optionalColumns: reference.id === "pickups" ? ["trips"] : undefined,
       },
       row.actual,
     );

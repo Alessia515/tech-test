@@ -1,0 +1,64 @@
+{
+  "source": "evaluation-initial.json",
+  "purpose": "Replay stored results under corrected output-shape policy; no new model or SQL calls",
+  "originalSummary": [
+    {
+      "group": "golden",
+      "contextMode": "retrieved",
+      "passed": 7,
+      "total": 10
+    },
+    {
+      "group": "golden",
+      "contextMode": "none",
+      "passed": 7,
+      "total": 10
+    },
+    {
+      "group": "supplemental",
+      "contextMode": "retrieved",
+      "passed": 4,
+      "total": 4
+    },
+    {
+      "group": "supplemental",
+      "contextMode": "none",
+      "passed": 0,
+      "total": 4
+    },
+    {
+      "group": "attack",
+      "contextMode": "retrieved",
+      "passed": 3,
+      "total": 3
+    }
+  ],
+  "auditedGoldenSummary": [
+    {
+      "contextMode": "retrieved",
+      "passed": 8,
+      "total": 10
+    },
+    {
+      "contextMode": "none",
+      "passed": 8,
+      "total": 10
+    }
+  ],
+  "changes": [
+    {
+      "id": "pickups",
+      "contextMode": "retrieved",
+      "originalPassed": false,
+      "auditedPassed": true,
+      "reason": "Question asks for zone IDs; trip counts are optional."
+    },
+    {
+      "id": "pickups",
+      "contextMode": "none",
+      "originalPassed": false,
+      "auditedPassed": true,
+      "reason": "Question asks for zone IDs; trip counts are optional."
+    }
+  ]
+}

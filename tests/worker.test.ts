@@ -101,6 +101,11 @@ test('retrieval is stable, bounded and selects relevant semantic notes', () => {
   assert.equal(new Set(snippets.map(item=>item.id)).size,snippets.length);
   assert.equal(snippets.length,18);
 });
+test('ratio-of-totals question retrieves its metric despite competing common terms',()=>{
+  const question='For January card trips with positive fares, what percentage of total fare was recorded as tips?';
+  assert.ok(retrieve(question).some(item=>item.id==='tip-ratio'));
+  assert.ok(!retrieve('How many trips had pickups in January 2024?').some(item=>item.id==='example-cash'));
+});
 test('no-context comparison keeps schema/safety/time rules and omits retrieved notes', () => {
   const withNotes=buildPrompt('How much was tipped in cash?','retrieved');
   const without=buildPrompt('How much was tipped in cash?','none');

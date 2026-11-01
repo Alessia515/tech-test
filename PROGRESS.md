@@ -140,3 +140,16 @@ Step 5 checkpoint recorded: 1 November 2026, approximately 21:15 Europe/Buchares
 
 Step 6 checkpoint recorded: 1 November 2026, approximately 21:30 Europe/Bucharest. Both TypeScript targets and final production build passed; existing large-shared-chunk warning remains documented.
 
+
+## Step 7 — Evaluation in progress
+
+- Committed protocol8b72f9d before31 first-attempt live calls; original output preserved in data/evaluation-initial.json.
+- Initial automated golden scores7/10 in both conditions. Audit found a scorer mistake:IDs-only ranking correctly answers the actual question, although the oracle also included counts. Replaying stored results with optional counts gives8/10 in both conditions; raw report preserved unchanged and audit saved separately.
+- Initial semantic supplements:retrieved4/4 versus none0/4. Prompt attacks:3/3 blocked.
+- Diagnosed actual wrong metered fare without context:extra charges inflated answer to73,962,704.95 instead of53,881,922.66.
+- Diagnosed tips in both conditions:AVG(tip/fare) gave28.695695% instead of ratio-of-sums22.467684%. Critical tip-ratio note was omitted from retrieved top4 due common-word tie crowding.
+- Retrieved empty-case output was textual null SQL, safely rejected rather than an empty table.
+- Revised scoring only for genuinely optional counts; no expected data values/tolerances changed. Added regression checks for wrong ranks/counts.
+- Revised retrieval with rare-term IDF weights and removed generic cash-example triggers. Clarified actual JSON null and answerable contradictory filters in shared instructions. Both context conditions get the same shared prompt changes.
+- Second complete run will be preserved separately; no cherry-picked or silent model retries.
+

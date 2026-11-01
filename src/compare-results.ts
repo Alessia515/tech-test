@@ -8,6 +8,13 @@ type ExpectedTable = {
   rows: Cell[][];
   tolerance: number;
   unordered?: boolean;
+  optionalColumns?: string[];
+};
+type Comparison = {
+  passed: boolean;
+  reason: string;
+  columnMapping?: number[];
+  omittedOptionalColumns?: string[];
 };
 
 function normalize(value: Cell, type: string, expected: Cell): Cell {
@@ -64,7 +71,31 @@ function permutations(length: number): number[][] {
 export function compareResults(
   expected: ExpectedTable,
   observed: ObservedTable,
-) {
+): Comparison {
+  if (
+    expected.optionalColumns?.length &&
+    observed.columns.length < expected.columns.length
+  ) {
+    const required = expected.columns
+      .map((_name, index) => index)
+      .filter(
+        (index) => !expected.optionalColumns!.includes(expected.columns[index]),
+      );
+    if (observed.columns.length === required.length) {
+      const result = compareResults(
+        {
+          ...expected,
+          columns: required.map((index) => expected.columns[index]),
+          rows: expected.rows.map((row) => required.map((index) => row[index])),
+          optionalColumns: undefined,
+        },
+        observed,
+      );
+      return result.passed
+        ? { ...result, omittedOptionalColumns: expected.optionalColumns }
+        : result;
+    }
+  }
   if (observed.columns.length !== expected.columns.length)
     return { passed: false, reason: "column-count mismatch" };
   if (observed.rows.length !== expected.rows.length)
