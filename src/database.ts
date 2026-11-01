@@ -3,10 +3,11 @@ import mvpWasm from '@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm?url';
 import mvpWorker from '@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js?url';
 import ehWasm from '@duckdb/duckdb-wasm/dist/duckdb-eh.wasm?url';
 import ehWorker from '@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js?url';
+import { createQueryRunner, QUERY_TIMEOUT_MS } from './query-runner';
 
 // Engine assets are local. Parquet's signed extension loads from DuckDB's CDN
 // during trusted initialization. The async API runs DuckDB off the UI thread.
-export async function loadDatabase(onStatus: (message: string) => void) {
+export async function loadDatabase(onStatus: (message: string) => void, timeoutMs = QUERY_TIMEOUT_MS) {
   const started = performance.now();
   const bundle = await duckdb.selectBundle({
     mvp: { mainModule: mvpWasm, mainWorker: mvpWorker },
@@ -29,7 +30,16 @@ export async function loadDatabase(onStatus: (message: string) => void) {
     // Trusted setup finishes before any user SQL will be allowed.
     await connection.query('SET enable_external_access = false');
     await connection.query('SET lock_configuration = true');
-    return { db, connection, loadMs: Math.round(performance.now() - started), version: await db.getVersion() };
+    const runner = createQueryRunner(sql => connection.query(sql), () => { void db.terminate(); }, timeoutMs);
+    let disposed = false;
+    return {
+      db, connection, runner, loadMs: Math.round(performance.now() - started), version: await db.getVersion(),
+      async close() {
+        if (disposed) return;
+        disposed = true;
+        runner.close();
+      },
+    };
   } catch (error) {
     await db.terminate();
     throw error;

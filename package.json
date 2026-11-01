@@ -14,10 +14,12 @@
     "preview": "vite preview --host 127.0.0.1",
     "inspect:data": "node scripts/inspect-data.mjs",
     "reference:data": "node scripts/reference-answers.mjs",
-    "test:spike": "node scripts/browser-spike.mjs"
+    "test:spike": "node scripts/browser-spike.mjs",
+    "test:validator": "node --experimental-strip-types --test tests/validator.test.ts"
   },
   "dependencies": {
     "@duckdb/duckdb-wasm": "1.33.1-dev57.0",
+    "node-sql-parser": "5.4.0",
     "react": "19.3.1",
     "react-dom": "19.3.1"
   },

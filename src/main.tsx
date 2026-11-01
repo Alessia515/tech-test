@@ -3,9 +3,11 @@ import { createRoot } from 'react-dom/client';
 import { loadDatabase, tableRows } from './database';
 import './style.css';
 import { verifyReferenceQueries } from './verify-reference';
+import { verifyValidator, verifyTimeoutRecovery } from './verify-validator';
 
 async function runSpike(status: (message: string) => void) {
-  const { db, connection, loadMs, version } = await loadDatabase(status);
+  const session = await loadDatabase(status);
+  const { connection, runner, loadMs, version } = session;
   try {
     const summary = tableRows(await connection.query(`SELECT count(*) AS raw_rows,
       count(*) FILTER (WHERE tpep_pickup_datetime >= TIMESTAMP '2024-01-01'
@@ -21,13 +23,16 @@ async function runSpike(status: (message: string) => void) {
       try { await connection.query(sql); guards.push({ sql, blocked: false, error: '' }); }
       catch (error) { guards.push({ sql, blocked: true, error: String(error) }); }
     }
-    const referenceQueries = await verifyReferenceQueries(connection);
-    return { version, loadMs, summary, schema, guards, referenceQueries };
-  } finally { await connection.close(); await db.terminate(); }
+    const referenceQueries = await verifyReferenceQueries(sql => runner.run(sql));
+    const validator = await verifyValidator(session);
+    await session.close();
+    const timeoutRecovery = await verifyTimeoutRecovery(status);
+    return { version, loadMs, summary, schema, guards, referenceQueries, validator, timeoutRecovery };
+  } finally { await session.close(); }
 }
 
 function App() {
-  const [status, setStatus] = useState('Ready. This is a data-loading spike, not the finished app.');
+  const [status, setStatus] = useState('Ready. This checks data loading and SQL validation, not AI generation.');
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<Awaited<ReturnType<typeof runSpike>> | null>(null);
   async function run() {
@@ -36,7 +41,7 @@ function App() {
     catch (error) { setStatus(`Failed: ${String(error)}`); }
     finally { setBusy(false); }
   }
-  return <main><p className="eyebrow">INTERVIEW BUILD · STEP 3</p><h1>Talk to Your Data</h1>
+  return <main><p className="eyebrow">INTERVIEW BUILD · STEP 4</p><h1>Talk to Your Data</h1>
     <p>Load January 2024 NYC yellow taxi trips locally and check the query engine.</p>
     <button onClick={run} disabled={busy}>{busy ? 'Checking…' : 'Run data spike'}</button>
     <p role="status">{status}</p>

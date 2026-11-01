@@ -80,3 +80,22 @@ The sequence can change when evidence warrants it; record the reason here.
 - Added README commands, data provenance, actual verification evidence and explicit limitations. This step tests fixed reference SQL, not LLM generation or the pending SELECT validator.
 - Candidate code walkthrough pending. Cloudflare access remains unconfirmed. Paused before Step 4.
 
+
+## Step 4 — Restricted SELECT validation and attacks (complete)
+
+- Chose pinned node-sql-parser PostgreSQL grammar; all ten reference queries parse. This is not a full DuckDB grammar.
+- Added src/sql-validator.ts: explicit table/column/function allowlists, unknown-node rejection, and AST-to-SQL reconstruction. Raw untrusted SQL is never executed. CTEs/joins/subqueries/windows/CASE/FILTER intentionally rejected.
+- Added src/query-runner.ts: validate immediately before driver calls, display cap 500 rows with truncation flag, default ten-second timeout, actual worker termination, rejected concurrent requests and closed-session reuse.
+- Security fixtures cover 50 rejected cases and 15 allowed cases. Node suite has 82 passing tests, including no driver calls on rejection, canonical round-trips, cleanup, timeout, errors and schema agreement.
+- Browser checks: all 50 rejected, all 15 allowed cases preserve results, all ten golden queries still match independent expected values through the validator, cap returns500/truncated=true.
+- Actual browser worker timeout/reload test: five-millisecond test budget, seven milliseconds observed, old session rejected reuse, fresh session returned2,964,624 raw rows.
+- Latest browser initial load2,834ms; no uncaught page errors; only expected signed Parquet startup extension requests.
+- Compiler tests caught and fixed parser details: doubled apostrophes preserved in AST, NOT represented as a function, undefined tail metadata on chained casts. Recorded the literal-semantic error in AI-USAGE.md.
+- TypeScript and production build passed. Main JS chunk~752kB/~186kB gzip now triggers Vite size warning; documented rather than suppressed.
+- Remaining limits include incomplete SQL coverage, unbounded intermediate memory, timer throttling, and no assurance of semantic correctness for model output. UI editing and live model verification remain future steps.
+- Step4 started around20:44:52 local; checkpoint time below. Wall time includes tool/approval waits and is not claimed as measured active effort.
+- Paused before Step5: Worker retrieval and generation. Cloudflare access still unconfirmed.
+
+
+Step 4 checkpoint recorded: 1 November 2026, approximately 20:54 Europe/Bucharest.
+

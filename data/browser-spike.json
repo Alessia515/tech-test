@@ -1,6 +1,6 @@
 {
   "version": "v1.5.4",
-  "loadMs": 3161,
+  "loadMs": 2834,
   "summary": [
     {
       "raw_rows": "2964624",
@@ -504,9 +504,352 @@
       "actual": []
     }
   ],
+  "validator": {
+    "attacks": [
+      {
+        "sql": "DROP TABLE trips",
+        "blocked": true,
+        "error": "SqlValidationError: Only SELECT queries are allowed."
+      },
+      {
+        "sql": "SELECT * FROM trips; DROP TABLE trips",
+        "blocked": true,
+        "error": "SqlValidationError: Only one SELECT statement is allowed."
+      },
+      {
+        "sql": "SELECT * FROM trips; SELECT * FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Only one SELECT statement is allowed."
+      },
+      {
+        "sql": "/* SELECT */ dRoP TABLE trips",
+        "blocked": true,
+        "error": "SqlValidationError: Only SELECT queries are allowed."
+      },
+      {
+        "sql": "SELECT 1; /* hidden */ COPY trips TO 'stolen.csv'",
+        "blocked": true,
+        "error": "SqlValidationError: SQL could not be parsed in the supported SELECT subset."
+      },
+      {
+        "sql": "WITH x AS (SELECT * FROM trips) SELECT * FROM x",
+        "blocked": true,
+        "error": "SqlValidationError: CTEs, window functions, and SELECT options are not supported."
+      },
+      {
+        "sql": "WITH x AS (DELETE FROM trips RETURNING *) SELECT * FROM x",
+        "blocked": true,
+        "error": "SqlValidationError: SQL could not be parsed in the supported SELECT subset."
+      },
+      {
+        "sql": "WITH RECURSIVE x AS (SELECT 1 UNION ALL SELECT 1 FROM x) SELECT * FROM x",
+        "blocked": true,
+        "error": "SqlValidationError: CTEs, window functions, and SELECT options are not supported."
+      },
+      {
+        "sql": "SELECT * FROM trips UNION ALL SELECT * FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Unsupported SQL option: _next."
+      },
+      {
+        "sql": "SELECT (SELECT count(*) FROM trips) FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Unsupported expression: undefined. Simplify the query."
+      },
+      {
+        "sql": "SELECT * FROM (SELECT * FROM trips) x",
+        "blocked": true,
+        "error": "SqlValidationError: Unsupported SQL option: prefix."
+      },
+      {
+        "sql": "SELECT * FROM trips t JOIN trips u ON t.PULocationID = u.PULocationID",
+        "blocked": true,
+        "error": "SqlValidationError: Query exactly one table: trips. Joins and subqueries are not supported."
+      },
+      {
+        "sql": "SELECT * FROM read_parquet('https://example.com/data.parquet')",
+        "blocked": true,
+        "error": "SqlValidationError: Unsupported SQL option: prefix."
+      },
+      {
+        "sql": "SELECT * FROM read_csv('/etc/passwd')",
+        "blocked": true,
+        "error": "SqlValidationError: Unsupported SQL option: prefix."
+      },
+      {
+        "sql": "SELECT * FROM glob('*')",
+        "blocked": true,
+        "error": "SqlValidationError: Unsupported SQL option: prefix."
+      },
+      {
+        "sql": "SELECT * FROM 'https://example.com/data.parquet'",
+        "blocked": true,
+        "error": "SqlValidationError: Only the local trips table is allowed."
+      },
+      {
+        "sql": "SELECT * FROM duckdb_tables()",
+        "blocked": true,
+        "error": "SqlValidationError: Unsupported SQL option: prefix."
+      },
+      {
+        "sql": "SELECT * FROM information_schema.tables",
+        "blocked": true,
+        "error": "SqlValidationError: Only the local trips table is allowed."
+      },
+      {
+        "sql": "SELECT * FROM main.trips",
+        "blocked": true,
+        "error": "SqlValidationError: Only the local trips table is allowed."
+      },
+      {
+        "sql": "SELECT read_blob('/etc/passwd') FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Function READ_BLOB is not allowed."
+      },
+      {
+        "sql": "SELECT query('DROP TABLE trips') FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Function QUERY is not allowed."
+      },
+      {
+        "sql": "SELECT query_table('trips') FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Function QUERY_TABLE is not allowed."
+      },
+      {
+        "sql": "SELECT getenv('HOME') FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Function GETENV is not allowed."
+      },
+      {
+        "sql": "SELECT nextval('counter') FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Function NEXTVAL is not allowed."
+      },
+      {
+        "sql": "SELECT setseed(0.5) FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Function SETSEED is not allowed."
+      },
+      {
+        "sql": "SELECT write_log('probe') FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Function WRITE_LOG is not allowed."
+      },
+      {
+        "sql": "SELECT main.abs(fare_amount) FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Unsupported SQL option: schema."
+      },
+      {
+        "sql": "SELECT \"read_blob\"('/etc/passwd') FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Function READ_BLOB is not allowed."
+      },
+      {
+        "sql": "ATTACH 'remote.db' AS remote",
+        "blocked": true,
+        "error": "SqlValidationError: SQL could not be parsed in the supported SELECT subset."
+      },
+      {
+        "sql": "COPY trips TO 'stolen.csv'",
+        "blocked": true,
+        "error": "SqlValidationError: SQL could not be parsed in the supported SELECT subset."
+      },
+      {
+        "sql": "COPY (SELECT * FROM trips) TO 'https://example.com/out'",
+        "blocked": true,
+        "error": "SqlValidationError: SQL could not be parsed in the supported SELECT subset."
+      },
+      {
+        "sql": "INSTALL httpfs",
+        "blocked": true,
+        "error": "SqlValidationError: SQL could not be parsed in the supported SELECT subset."
+      },
+      {
+        "sql": "LOAD httpfs",
+        "blocked": true,
+        "error": "SqlValidationError: SQL could not be parsed in the supported SELECT subset."
+      },
+      {
+        "sql": "PRAGMA enable_external_access=true",
+        "blocked": true,
+        "error": "SqlValidationError: SQL could not be parsed in the supported SELECT subset."
+      },
+      {
+        "sql": "SET enable_external_access=true",
+        "blocked": true,
+        "error": "SqlValidationError: Only SELECT queries are allowed."
+      },
+      {
+        "sql": "CREATE TABLE stolen AS SELECT * FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Only SELECT queries are allowed."
+      },
+      {
+        "sql": "UPDATE trips SET fare_amount=0",
+        "blocked": true,
+        "error": "SqlValidationError: Only SELECT queries are allowed."
+      },
+      {
+        "sql": "DELETE FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Only SELECT queries are allowed."
+      },
+      {
+        "sql": "SELECT * INTO stolen FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Unsupported SQL option: keyword."
+      },
+      {
+        "sql": "SELECT * FROM trips FOR UPDATE",
+        "blocked": true,
+        "error": "SqlValidationError: SQL could not be parsed in the supported SELECT subset."
+      },
+      {
+        "sql": "SELECT trip_distance FROM trips LIMIT 1 OFFSET 1",
+        "blocked": true,
+        "error": "SqlValidationError: OFFSET and compound LIMIT are unsupported."
+      },
+      {
+        "sql": "SELECT no_such_column FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Unknown column: no_such_column."
+      },
+      {
+        "sql": "SELECT other.fare_amount FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Unknown table qualifier."
+      },
+      {
+        "sql": "SELECT row_number() OVER () FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Unsupported expression: window_func. Simplify the query."
+      },
+      {
+        "sql": "SELECT repeat('x',1000000000) FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Function REPEAT is not allowed."
+      },
+      {
+        "sql": "SELECT * FROM range(1000000000)",
+        "blocked": true,
+        "error": "SqlValidationError: Unsupported SQL option: prefix."
+      },
+      {
+        "sql": "SELECT fare_amount::BLOB FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: SQL could not be parsed in the supported SELECT subset."
+      },
+      {
+        "sql": "SELECT count(*) FILTER (WHERE fare_amount > 0) FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Unsupported SQL option: filter."
+      },
+      {
+        "sql": "SELECT CASE WHEN fare_amount > 0 THEN 1 ELSE 0 END FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Unsupported expression: case. Simplify the query."
+      },
+      {
+        "sql": "SELECT 1 FROM trips LIMIT 100001",
+        "blocked": true,
+        "error": "SqlValidationError: LIMIT must be an integer between 0 and 100000."
+      }
+    ],
+    "compatible": [
+      {
+        "sql": "/* header */ SeLeCt count(*) AS n FROM trips; -- trailing",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT COUNT(*) AS \"n\" FROM \"trips\" AS \"trips\") AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT * FROM trips LIMIT 5",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT * FROM \"trips\" AS \"trips\" LIMIT 5) AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT t.fare_amount FROM trips AS t WHERE t.payment_type IN (1,2) LIMIT 2",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT \"t\".\"fare_amount\" FROM \"trips\" AS \"t\" WHERE (\"t\".\"payment_type\" IN (1, 2)) LIMIT 2) AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT \"PULocationID\", count(*) AS n FROM \"trips\" GROUP BY 1 ORDER BY n DESC LIMIT 5",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT \"PULocationID\", COUNT(*) AS \"n\" FROM \"trips\" AS \"trips\" GROUP BY 1 ORDER BY \"n\" DESC LIMIT 5) AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT round(avg(fare_amount),2) AS average FROM trips",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT ROUND(AVG(\"fare_amount\"), 2) AS \"average\" FROM \"trips\" AS \"trips\") AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT count(DISTINCT PULocationID) AS zones FROM trips",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT COUNT(DISTINCT \"PULocationID\") AS \"zones\" FROM \"trips\" AS \"trips\") AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT date_trunc('day',tpep_pickup_datetime) AS day, count(*) AS n FROM trips GROUP BY 1 ORDER BY 1",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT DATE_TRUNC('day', \"tpep_pickup_datetime\") AS \"day\", COUNT(*) AS \"n\" FROM \"trips\" AS \"trips\" GROUP BY 1 ORDER BY 1) AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT coalesce(passenger_count,0) AS passengers FROM trips LIMIT 1",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT COALESCE(\"passenger_count\", 0) AS \"passengers\" FROM \"trips\" AS \"trips\" LIMIT 1) AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT -fare_amount AS negative FROM trips LIMIT 1",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT (- \"fare_amount\") AS \"negative\" FROM \"trips\" AS \"trips\" LIMIT 1) AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT fare_amount FROM trips WHERE fare_amount IS NOT NULL AND NOT (payment_type = 1) LIMIT 1",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT \"fare_amount\" FROM \"trips\" AS \"trips\" WHERE ((\"fare_amount\" IS NOT NULL) AND (NOT (\"payment_type\" = 1))) LIMIT 1) AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT count(*) AS n FROM trips HAVING count(*) > 0",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT COUNT(*) AS \"n\" FROM \"trips\" AS \"trips\" HAVING (COUNT(*) > 0)) AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT DISTINCT payment_type FROM trips ORDER BY payment_type",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT DISTINCT \"payment_type\" FROM \"trips\" AS \"trips\" ORDER BY \"payment_type\") AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT '; DROP TABLE trips; --' AS text FROM trips LIMIT 1",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT '; DROP TABLE trips; --' AS \"text\" FROM \"trips\" AS \"trips\" LIMIT 1) AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT 'it''s a SELECT; DROP TABLE trips' AS text FROM trips LIMIT 1",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT 'it''s a SELECT; DROP TABLE trips' AS \"text\" FROM \"trips\" AS \"trips\" LIMIT 1) AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT 'https://example.com/read_csv' AS text FROM trips LIMIT 1",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT 'https://example.com/read_csv' AS \"text\" FROM \"trips\" AS \"trips\" LIMIT 1) AS \"__result\" LIMIT 501"
+      }
+    ],
+    "resultCap": {
+      "rows": 500,
+      "truncated": true
+    }
+  },
+  "timeoutRecovery": {
+    "timeoutMessage": "Error: Query exceeded its time limit. The database was stopped; reload the dataset.",
+    "closedMessage": "Error: Database session ended. Reload the dataset to continue.",
+    "elapsedMs": 7,
+    "reloadedRows": "2964624"
+  },
   "external": [
+    "https://extensions.duckdb.org/v1.5.4/wasm_eh/parquet.duckdb_extension.wasm",
+    "https://extensions.duckdb.org/v1.5.4/wasm_eh/parquet.duckdb_extension.wasm",
     "https://extensions.duckdb.org/v1.5.4/wasm_eh/parquet.duckdb_extension.wasm"
   ],
   "errors": [],
-  "assertions": "6 passed"
+  "assertions": "10 passed"
 }
