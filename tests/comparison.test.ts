@@ -1,6 +1,14 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { compareResults } from "../src/compare-results.ts";
+import { compareResults, encodeObservedCell } from "../src/compare-results.ts";
+test("JSON report round-trips distinguish nonfinite results from SQL NULL", () => {
+  const report = JSON.parse(
+    JSON.stringify(
+      [null, NaN, Infinity, -Infinity, 2964606n].map(encodeObservedCell),
+    ),
+  );
+  assert.deepEqual(report, [null, "NaN", "Infinity", "-Infinity", "2964606"]);
+});
 test("IDs-only ranking answers satisfy an IDs-only question; supplied counts still must match", () => {
   const expected = {
     columns: ["zone_id", "trips"],

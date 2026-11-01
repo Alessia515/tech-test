@@ -77,3 +77,11 @@ Only question and contextMode are accepted, with a 4096-byte body and 1000-chara
 API checks: `pnpm test:worker`, `pnpm check:worker`, `pnpm build:worker`. The last command bundles with `--dry-run`; it does not deploy. The compatibility date is pinned to 2026-10-30, supported by the pinned local runtime. pnpm-workspace.yaml permits only the pinned esbuild/workerd install scripts needed by Wrangler.
 
 As checked on 1 November 2026, Workers AI Free includes 10,000 Neurons/day and requests stop at the free limit; our model is not among the listed paid-only models. See https://developers.cloudflare.com/workers-ai/platform/pricing/. Model timeout is a 30-second response-wait limit; it does not guarantee provider-side cancellation. This is a local prototype, without public authentication or distributed rate limiting; public hosting needs that separate decision.
+
+## Recorded model evaluation
+
+The revised recorded run passed all ten golden questions with retrieval, versus nine without; four additional semantic cases passed four versus zero. Three attack prompts were blocked. See VERIFICATION.md for the original failures, scorer correction, full comparison, and remaining vocabulary/memory/runtime limitations. Passing this small set is not a general correctness guarantee.
+
+`pnpm evaluate:live` drives verify.html, makes 31 model requests, executes table answers locally, saves data/evaluation-latest.json, and prints pass/fail summaries. It exits nonzero if a retrieved-mode case fails; no-context control failures remain visible in the comparison matrix. Fixtures are refused. For checks with no inference calls, use `pnpm test:validator`, `pnpm test:worker`, `pnpm test:api`, and `pnpm test:comparison` (127 tests across them). Original and revised evidence files are kept separately rather than overwritten.
+
+The runtime scripts use separate .wrangler/live and .wrangler/fixture state paths. This avoids the shared-state lock observed when both development modes were running during reload; only one API mode on the default port is needed for ordinary use. If the local API fails before generation, restart the appropriate Worker and check /api/health; do not treat a fixture fallback as live success.

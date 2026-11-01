@@ -1,0 +1,14 @@
+{
+  "kind": "native diagnostic replay of recorded SQL; no model request",
+  "originalRecordedRows": [
+    [
+      null
+    ]
+  ],
+  "replayedValues": [
+    [
+      "NaN"
+    ]
+  ],
+  "note": "JSON encodes nonfinite numbers as null; future harness records their names explicitly. Original reports are unchanged."
+}

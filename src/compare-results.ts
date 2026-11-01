@@ -1,4 +1,12 @@
 type Cell = string | number | boolean | null;
+export function encodeObservedCell(value: unknown): Cell {
+  if (value == null) return null;
+  if (typeof value === "bigint") return value.toString();
+  if (typeof value === "number")
+    return Number.isFinite(value) ? value : String(value);
+  if (typeof value === "string" || typeof value === "boolean") return value;
+  throw new Error("The golden oracle supports primitive result cells only.");
+}
 export type ObservedTable = {
   columns: { name: string; type: string }[];
   rows: Cell[][];

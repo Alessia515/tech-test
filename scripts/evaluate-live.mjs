@@ -25,7 +25,8 @@ try {
     JSON.stringify(report, null, 2) + "\n",
   );
   console.table(report.summary);
-  if (report.rows.some((row) => !row.passed)) process.exitCode = 1;
+  // Gate the actual application mode; control failures stay visible in the matrix.
+  if (report.rows.some((row) => row.contextMode === "retrieved" && !row.passed)) process.exitCode = 1;
 } finally {
   await browser.close();
 }

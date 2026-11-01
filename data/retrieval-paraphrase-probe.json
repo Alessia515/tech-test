@@ -1,0 +1,11 @@
+{
+  "kind": "post-run exploratory retrieval-only probe; not pooled into scored model results",
+  "question": "For card payments, what fraction of fare went to gratuities in January?",
+  "expectedMetricNote": "tip-ratio",
+  "retrievedIds": [
+    "payment",
+    "example-average",
+    "fare"
+  ],
+  "metricNoteFound": false
+}

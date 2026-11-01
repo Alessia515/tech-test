@@ -153,3 +153,18 @@ Step 6 checkpoint recorded: 1 November 2026, approximately 21:30 Europe/Buchares
 - Revised retrieval with rare-term IDF weights and removed generic cash-example triggers. Clarified actual JSON null and answerable contradictory filters in shared instructions. Both context conditions get the same shared prompt changes.
 - Second complete run will be preserved separately; no cherry-picked or silent model retries.
 
+
+### Step 7 completion
+
+- Revised complete batch saved in data/evaluation-revised.json:golden10/10 retrieved vs9/10 none; semantic supplements4/4 vs0/4; malicious prompts3/3 blocked.31 requests completed in82.8 seconds, with no automatic per-case retries.
+- Both initial and revised outputs remain unchanged. Source hashes match revised Worker/model-related files and existing golden oracle. First-protocol8b72f9d and revisionsc4b968f provide pre-run history.
+- Revised preflight failed before inference when workerd crashed with SQLITE_BUSY_RECOVERY. Isolated live/fixture persistence paths and restarted; complete run succeeded. Exact recurrence risk on concurrent/OneDrive reload remains unproven.
+- Post-run exploratory retrieval-only paraphrase misses tip-ratio; saved separately and not pooled into scored results. Retained as a concrete lexical-coverage limitation.
+- Diagnostic replay found no-context default-tip NaN serialized as null in JSON. Preserved original reports, saved native replay evidence, and made future report encoding distinguish nonfinite values from SQL NULL. Failed score unchanged; no new model calls for this check.
+-127 Node tests pass after scorer/retrieval/report regression checks. Both TypeScript targets pass. Final bundle checks follow.
+- Updated full pass/fail tables, semantic diagnoses, retained limitations and reproduction commands. No claim of general accuracy or isolated causal attribution across changed prompt versions.
+- Began around21:31 Europe/Bucharest; checkpoint time below. Paused before Step8:clean-clone rehearsal, final concise docs, and candidate walkthrough.
+
+
+Step 7 final checks:frontend production build and Worker dry-run bundle passed; no deployment. CLI exit status gates retrieved/application cases while retaining all no-context pass/fail results in its matrix. Checkpoint recorded1 November2026 around21:57 Europe/Bucharest.
+

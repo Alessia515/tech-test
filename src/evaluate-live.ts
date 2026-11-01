@@ -1,7 +1,7 @@
 import golden from "../data/golden.json";
 import baseline from "../data/evaluation-revised-baseline.json";
 import { loadDatabase } from "./database";
-import { compareResults } from "./compare-results";
+import { compareResults, encodeObservedCell } from "./compare-results";
 import type { ObservedTable } from "./compare-results";
 
 type EvalCase = {
@@ -79,12 +79,7 @@ function observedTable(
   const vectors = columns.map((_field, index) => table.getChildAt(index));
   const rows = Array.from({ length: table.numRows }, (_unused, row) =>
     vectors.map((vector) => {
-      const value = vector?.get(row);
-      return value == null
-        ? null
-        : typeof value === "bigint"
-          ? value.toString()
-          : value;
+      return encodeObservedCell(vector?.get(row));
     }),
   );
   return { columns, rows };
