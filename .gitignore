@@ -5,3 +5,4 @@ public/data/*.parquet
 .env*
 .wrangler/
 work/
+outputs/

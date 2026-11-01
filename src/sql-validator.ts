@@ -67,8 +67,8 @@ export function validateSql(sql: unknown): { sql: string; executionSql: string }
   if (ast.into) { fields(ast.into, ['position']); if (ast.into.position != null) fail('SELECT INTO is not allowed.'); }
   if (!Array.isArray(ast.from) || ast.from.length !== 1) fail('Query exactly one table: trips. Joins and subqueries are not supported.');
   const from = object(ast.from[0]);
+  if (from.db != null || typeof from.table !== 'string' || from.table.toLowerCase() !== 'trips') fail('Only the local trips table is allowed. File readers and table functions are blocked.');
   fields(from, ['db', 'table', 'as']);
-  if (from.db != null || typeof from.table !== 'string' || from.table.toLowerCase() !== 'trips') fail('Only the local trips table is allowed.');
   const tableAlias = from.as == null ? 'trips' : identifier(from.as);
   if (!Array.isArray(ast.columns) || !ast.columns.length || ast.columns.length > 30) fail('Select between 1 and 30 expressions.');
   const aliases = new Map<string, string>();

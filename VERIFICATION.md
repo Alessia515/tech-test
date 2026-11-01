@@ -1,6 +1,6 @@
-# Verification — Steps 3–5
+# Verification — Steps 3–6
 
-Status: browser/data loading, restricted SELECT validation, worker timeout/recovery, local Worker API and live model smoke requests verified. Full generated-query evaluation, retrieval benefit, UI SQL editing, and clean-clone timing are still pending.
+Status: browser/data loading, restricted SELECT validation, worker timeout/recovery, Worker API, live model smoke requests, and the editable-SQL UI flow verified. One generated query has now been executed in the browser against its golden answer. Full generated-query evaluation, retrieval benefit, and clean-clone timing are still pending.
 
 ## Actual run
 
@@ -100,4 +100,34 @@ Setup failures encountered and diagnosed:
 - The initial deliberately restricted OAuth login omitted `workers_scripts:write`. A read-only API probe returned HTTP 403/code 10000; after the candidate approved that additional scope, it returned HTTP 200 and remote preview connected. Credentials stayed outside the repo; diagnostic tokens were kept in memory and never printed/saved by the probe.
 - Immediate model requests initially returned sanitized service failures, then a later request succeeded without changing the model or generation settings. The exact transient cause remains unconfirmed; onboarding/permission propagation is a hypothesis, not an established diagnosis. There is no automatic retry or fixture fallback. Temporary diagnostic logging was removed.
 
-Model timeout currently limits how long the Worker waits (30 seconds); it does not prove provider-side cancellation. Public authentication, distributed rate limiting and prompt-injection robustness are not yet established. Live retrieval accuracy and generated-result semantic correctness remain the next verification work after the UI loop is connected.
+Model timeout currently limits how long the Worker waits (30 seconds); it does not prove provider-side cancellation. Public authentication, distributed rate limiting and prompt-injection robustness are not yet established. The UI connection below establishes one correct generated result, while broad live retrieval accuracy and semantic correctness remain pending.
+
+## Step 6 — Interactive browser checks
+
+The root page now loads one database session, shows Worker provenance, accepts a question, displays returned SQL and rationale, and runs the query through the local guard. Edited SQL uses exactly the same validation/runner path and never calls the generation API. An original proposal is labelled with its question; editing clears the old result and flags the original rationale as potentially stale. Results expose the exact compiled/capped SQL. The older automated spike remains available at verify.html and is bundled as a separate verification page.
+
+The following checks were performed through the actual browser UI (CUA), not just by invoking React functions:
+
+| Check | Observed result |
+| --- | --- |
+| Initial database loading | Ask/run disabled while loading; ready status after approximately 2.3–3.0 seconds |
+| Fixture question to table | Explicit fixture badge and result source; January count 2,964,606 |
+| Edit/re-run locally | Added payment_type=1; card count 2,319,036, labelled Edited SQL |
+| DROP TABLE trips | Blocked with "Only SELECT queries are allowed"; no result table left visible |
+| SELECT; DROP | Blocked with "Only one SELECT statement is allowed" |
+| read_parquet URL | Blocked with clear local-table/file-reader restriction |
+| Contradictory date filter | Zero-row empty state with a helpful filter message |
+| Unbounded detail projection | Exactly 500 rendered rows and explicit truncation message |
+| Unsupported fixture question | Clear API error, no stale SQL/results presented as a new answer |
+| Cancel live generation | Pending request cancelled, no local query run, controls usable afterward |
+| AVG(VARCHAR) execution error | DuckDB binder error surfaced; next valid local query succeeds |
+| Repeated columns/timestamp/NULL | Both repeated values shown; timestamp 2024-01-01 00:57:55.000 and explicit NULL displayed |
+| Real AI → SQL → local table | Live badge, January COUNT SQL and 2,964,606 rendered; matches independent expected count |
+| Exact executable SQL | Expanded locally executed query shows approved identifiers, date bounds and outer LIMIT 501 |
+| Browser console | No recorded error-level entries in the final live flow |
+
+Live UI output is recorded in data/ui-live-result.json. A preview is saved locally in ignored outputs/app-live.jpg. This is one golden question checked end to end, not ten successful model generations. The full generated golden set and meaningful retrieval ablation are Step 7.
+
+Four additional API-client tests verify outgoing payload fields, preservation of rejected proposals for inspection, readable malformed/HTML response errors, and rejection of unknown mode/provenance. Together with previous tests, **118 Node tests pass**. Both TypeScript targets and production bundling are checked. Result transfer retains BIGINT as text; timestamp display uses Arrow's millisecond values without browser-local timezone conversion. Submillisecond display precision is not guaranteed. The browser loading/error/cancel checks are manual evidence; the existing spike harness still provides automated fixed-query regression checks.
+
+The UI generation wait is bounded at 35 seconds, separately from the local ten-second query budget. Cancelling generation does not guarantee that an already-dispatched provider request is cancelled. Local query cancellation destroys the database session and requires reload; ordinary binding/execution errors do not. Input/output limits still do not establish a hard memory bound.

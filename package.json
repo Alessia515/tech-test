@@ -22,7 +22,8 @@
     "check:worker": "tsc --noEmit -p tsconfig.worker.json",
     "build:worker": "wrangler deploy --dry-run --outdir work/worker-build",
     "test:worker:http": "node scripts/test-worker-http.mjs",
-    "smoke:live": "node --experimental-strip-types scripts/smoke-live.mjs"
+    "smoke:live": "node --experimental-strip-types scripts/smoke-live.mjs",
+    "test:api": "node --experimental-strip-types --test tests/api.test.ts"
   },
   "dependencies": {
     "@duckdb/duckdb-wasm": "1.33.1-dev57.0",
@@ -36,6 +37,7 @@
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "playwright": "1.64.1",
+    "prettier": "3.9.10",
     "typescript": "7.0.2",
     "vite": "8.3.5",
     "wrangler": "4.156.0"

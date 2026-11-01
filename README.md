@@ -1,6 +1,6 @@
 # Talk to Your Data
 
-Work in progress: browser data loading, restricted SELECT validation, and the Worker retrieval/generation API are implemented. The user question/SQL editor flow is the next step.
+The app connects plain-English questions to a Cloudflare Worker, retrieves dataset notes, generates SQL with Workers AI, validates it, and executes it locally in DuckDB-WASM. The SQL is visible and editable, with a separate local run button. Verification and clean-clone rehearsal are still in progress.
 
 ## Run the spike
 
@@ -12,9 +12,11 @@ pnpm data
 pnpm dev
 ```
 
-Open http://127.0.0.1:5173 and click **Run data spike**. The ~50 MB Parquet file is checksum-verified and served locally; engine WASM files are bundled locally. DuckDB downloads its signed Parquet extension from extensions.duckdb.org during trusted initialization. Startup therefore is not offline. No model credentials are needed for this spike.
+Open http://127.0.0.1:5173. The dataset loads automatically. Start one Worker API mode in another terminal (see below), choose an example and click **Ask & run**. The badge identifies live AI or canned fixtures. Inspect or edit the SQL and use **Run SQL locally** to rerun it without calling the model. Expand **SQL executed locally** to see the exact validated, capped query. Editing SQL clears the previous result so it cannot be mistaken for a new answer.
 
-The app materializes an in-memory `trips` table, drops the registered source file, disables external access, and locks configuration. The query runner validates and reconstructs SQL before executing it, caps displayed results at 500 rows, and terminates its worker on a ten-second timeout. Arbitrary user SQL is not currently exposed; the upcoming editor must use this runner.
+The ~50 MB Parquet file is checksum-verified and served locally; engine WASM files are bundled locally. DuckDB downloads its signed Parquet extension from extensions.duckdb.org during trusted initialization. Startup therefore is not offline. The separate http://127.0.0.1:5173/verify.html page retains the fixed-query data/validator spike used by `pnpm test:spike`.
+
+The app materializes an in-memory `trips` table, drops the registered source file, disables external access, and locks configuration. Every generated/edited query uses the same runner, which validates and reconstructs SQL, caps displayed results at 500 rows, and terminates its worker on a ten-second timeout. Cancel stops generation waiting, or terminates the database if a local query is running. Use **Reload dataset** after database termination. Ordinary query errors leave the session usable.
 
 ## Reproduce checks
 
@@ -57,6 +59,8 @@ pnpm smoke:live
 ```
 
 Both normal API commands use loopback port 8787. During development we also run live on 8788 to keep the fixture API available; in that case set API_BASE=http://127.0.0.1:8788 for the smoke script. The Vite proxy targets 8787 by default. No live failure silently falls back to fixtures.
+
+To point the app at a different local API, set API_TARGET before starting Vite. Current development session uses API_TARGET=http://127.0.0.1:8788 and shows **Live AI**. For PowerShell: `$env:API_TARGET='http://127.0.0.1:8788'; pnpm dev`. For POSIX shells: `API_TARGET=http://127.0.0.1:8788 pnpm dev`. A fresh setup with the documented default ports needs no API_TARGET variable.
 
 Live smoke evidence is in data/live-smoke.json and data/live-smoke-none.json. The first is a real retrieved-context model response, the second the same question without notes. Both passed SQL validation; the script does not execute the query. Set CONTEXT_MODE=none to reproduce the second request. One basic count question is not evidence that retrieval improves accuracy; the broader comparison is pending.
 

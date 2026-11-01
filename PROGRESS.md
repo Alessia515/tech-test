@@ -120,3 +120,23 @@ Step 4 checkpoint recorded: 1 November 2026, approximately 20:54 Europe/Buchares
 
 Step 5 checkpoint recorded: 1 November 2026, approximately 21:15 Europe/Bucharest.
 
+
+## Step 6 — Question, SQL editor and results UI (complete)
+
+- Added readable React modules for the app, API client, database lifecycle and results table. Pinned Prettier and formatted the new UI code for the candidate walkthrough.
+- Root page now supports question → live/fixture Worker → visible SQL/rationale → local validation/execution → table. Every edited query goes through the same guarded runner without another model call.
+- Live/fixture provenance is visible. Editing clears stale results and marks the old rationale as potentially stale; exact compiled/capped SQL is inspectable.
+- Added initial loading/error/empty states, example questions, result truncation, generation cancellation, query cancellation and database reload. Generation wait35s and local query budget10s are separate.
+- Moved the fixed-query spike to verify.html and updated its existing automated harness. Root UI is no longer a diagnostic report.
+- Browser fixture count2,964,606 and edited card count2,319,036 matched independent references. DROP/stacked/file-reader edits blocked with readable messages. Empty and500-row truncated states verified.
+- Browser live generation produced correct January COUNT and2,964,606 rows-as-count; result evidence saved in data/ui-live-result.json. This is one golden question, not full model evaluation.
+- Cancelled a live generation and verified later queries still work. Actual AVG(VARCHAR) binder error surfaced; next local query recovered. Repeated columns, timestamps andNULL rendering checked.
+- Added4 API-client tests for metadata-only outbound payloads and error/provenance handling;118 total Node tests passed. UI tests used actual CUA browser interactions. No final browser error-level logs observed.
+- Switched the running Vite proxy to live Worker8788 using API_TARGET; normal documented setup still uses API8787. Fixture Worker remains available separately.
+- Local preview saved in ignored outputs/app-live.jpg. Updated README, verification and AI usage. Candidate code walkthrough remains pending.
+- Started around21:15:25 Europe/Bucharest; checkpoint time below. Durations are wall-clock observations, not a measured active-time total.
+- Paused before Step7:full generated golden questions, retrieval comparison and failure analysis.
+
+
+Step 6 checkpoint recorded: 1 November 2026, approximately 21:30 Europe/Bucharest. Both TypeScript targets and final production build passed; existing large-shared-chunk warning remains documented.
+

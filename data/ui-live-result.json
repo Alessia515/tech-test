@@ -1,0 +1,14 @@
+{
+  "provenance": "Observed rendered browser UI after a real model response; checked against independent golden count",
+  "model": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+  "question": "How many trips had pickups in January 2024?",
+  "sql": "SELECT COUNT(*) AS trips FROM trips WHERE tpep_pickup_datetime >= TIMESTAMP '2024-01-01' AND tpep_pickup_datetime < TIMESTAMP '2024-02-01'",
+  "executedSql": "SELECT * FROM (SELECT COUNT(*) AS \"trips\" FROM \"trips\" AS \"trips\" WHERE ((\"tpep_pickup_datetime\" >= TIMESTAMP '2024-01-01') AND (\"tpep_pickup_datetime\" < TIMESTAMP '2024-02-01'))) AS \"__result\" LIMIT 501",
+  "renderedCells": [
+    "2964606"
+  ],
+  "expectedCells": [
+    "2964606"
+  ],
+  "consoleErrors": []
+}

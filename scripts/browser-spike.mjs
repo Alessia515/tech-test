@@ -12,7 +12,7 @@ try {
   page.on('request', request => {
     if (!request.url().startsWith('http://127.0.0.1:5173') && !request.url().startsWith('blob:')) external.push(request.url());
   });
-  await page.goto('http://127.0.0.1:5173/');
+  await page.goto('http://127.0.0.1:5173/verify.html');
   await page.getByRole('button', { name: 'Run data spike' }).click();
   await page.getByTestId('report').waitFor({ timeout: 90000 });
   const report = JSON.parse(await page.getByTestId('report').innerText());
