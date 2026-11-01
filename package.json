@@ -23,7 +23,9 @@
     "build:worker": "wrangler deploy --dry-run --outdir work/worker-build",
     "test:worker:http": "node scripts/test-worker-http.mjs",
     "smoke:live": "node --experimental-strip-types scripts/smoke-live.mjs",
-    "test:api": "node --experimental-strip-types --test tests/api.test.ts"
+    "test:api": "node --experimental-strip-types --test tests/api.test.ts",
+    "test:comparison": "node --experimental-strip-types --test tests/comparison.test.ts",
+    "evaluate:live": "node scripts/evaluate-live.mjs"
   },
   "dependencies": {
     "@duckdb/duckdb-wasm": "1.33.1-dev57.0",

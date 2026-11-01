@@ -1,0 +1,24 @@
+{
+  "label": "initial-unmodified-prompt",
+  "applicationCommit": "1b5a0a7",
+  "declaredBeforeGeneration": true,
+  "originalQuestions": 10,
+  "supplementalQuestions": 4,
+  "attackQuestions": 3,
+  "liveCallsPlanned": 31,
+  "scoring": "Compare values and shape, ignore aliases, permit one global column permutation; daily/hour groups unordered; preserve ranked ordering and original numeric tolerances. Missing-data cases require explicit model refusal. No retries or result feedback to the model.",
+  "supplementalDefinitions": {
+    "default-tip-rate": "Use the already documented ratio-of-sums metric on positive-fare card trips; expected value from existing tips golden oracle.",
+    "actual-cash-tips": "Refuse: cash tips are absent.",
+    "borough-lookup": "Refuse: taxi-zone-to-borough lookup is absent.",
+    "total-including-cash-tips": "Refuse: total charges exclude unrecorded cash tips."
+  },
+  "sourceSha256": {
+    "worker/index.ts": "ac7ece9f439889cb9982f7452e1f44f7f600ddf274b49cd7d5d32add287b0af7",
+    "worker/retrieval.ts": "d8fc8caa59f4164b7e29ae255087b4f1d3da4cfae7e5460f8c60c4d5015192ba",
+    "worker/snippets.ts": "99f9ce7173c0935ec26d833f9393fd19d1260ee3e1dbe8b1090c0250f3d0ce9e",
+    "shared/schema.ts": "ba8942c9856aade81e6b2ec83259803a49b87b58599313a07d5bb4a91b758cb4",
+    "src/sql-validator.ts": "dfea27c3da7f3bb4194c86ee4c7b55480c0089d1505576aad0700b7f3ce81a62",
+    "data/golden.json": "13ffd605ad5ea71b863df7f53929e93dabbd4c47fb0d3b92d3d4ede9e19c7c72"
+  }
+}
