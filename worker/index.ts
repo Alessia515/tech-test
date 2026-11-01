@@ -1,5 +1,6 @@
 import { buildPrompt, MODEL_ID } from './retrieval.ts';
 import { fixtureAnswer, fixtures } from './fixtures.ts';
+import { generateMetric } from './semantic.ts';
 import { validateSql, SqlValidationError, SQL_MAX_LENGTH } from '../src/sql-validator.ts';
 
 export type AiInput = {
@@ -83,11 +84,16 @@ export default {
       const mode = env.MODE ?? 'live';
       if (!['fixture','live'].includes(mode)) throw new ApiError(503,'CONFIGURATION','MODE must be live or fixture.');
       if (url.pathname === '/api/health' && request.method === 'GET') return response({ mode, model: mode === 'live' ? env.MODEL_ID ?? MODEL_ID : null, aiBinding: Boolean(env.AI), fixtureQuestions: mode === 'fixture' ? fixtures.map(item => item.question) : [] });
-      if (url.pathname !== '/api/generate') throw new ApiError(404,'NOT_FOUND','API route not found.');
+      if (!['/api/generate','/api/metrics'].includes(url.pathname)) throw new ApiError(404,'NOT_FOUND','API route not found.');
       if (request.method !== 'POST') throw new ApiError(405,'METHOD_NOT_ALLOWED','Use POST for SQL generation.');
       const origin = request.headers.get('origin');
       if (origin && origin !== (env.FRONTEND_ORIGIN ?? 'http://127.0.0.1:5173')) throw new ApiError(403,'ORIGIN_REJECTED','Request origin is not allowed.');
       const { question, contextMode } = await readQuestion(request);
+      if (url.pathname === '/api/metrics') {
+        if (contextMode === 'none') throw new ApiError(400,'INVALID_CONTEXT','Defined metrics always use the fixed catalog.');
+        const result = await generateMetric(question,env,callModel);
+        return response(result.body,result.status);
+      }
       const { messages, retrieved } = buildPrompt(question,contextMode);
       let proposal;
       if (mode === 'fixture') {

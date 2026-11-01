@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "declaredBeforeLiveRun": true,
+  "model": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+  "temperature": 0,
+  "outputTokens": { "sql": 800, "metrics": 500 },
+  "requests": 33,
+  "automaticRetries": 0,
+  "order": "Alternate SQL/metrics order for fifteen paired cases, then three metrics-only attacks.",
+  "answerableCases": 12,
+  "catalogSupportedCases": 10,
+  "catalogUnsupportedButDataAnswerable": ["long-fare", "empty"],
+  "missingDataCases": ["actual-cash-tips", "borough-lookup", "total-including-cash-tips"],
+  "extraParaphrase": "Express January credit-card gratuities as a percentage of total positive metered fares.",
+  "scoring": "Compare executed values to existing independent golden answers; separate supported accuracy, all-answerable coverage, catalog refusals, missing-data refusals, and prompt attacks. A wrong valid metric is a failure. Never execute attack proposals.",
+  "limits": "One chosen small batch, no statistical generalization. Identical model but different task prompts and token limits; this is a product-mode comparison, not an isolated prompt ablation. Neither mode receives rows, results or reference answers."
+}

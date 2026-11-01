@@ -1,3 +1,6 @@
+import type { MetricPlan } from "../shared/metrics.ts";
+import { parsePlan } from "../shared/metrics.ts";
+export type GenerationMode = "sql" | "metrics";
 export type ApiHealth = {
   mode: "live" | "fixture";
   model: string | null;
@@ -10,7 +13,10 @@ export type Proposal = {
   sql: string;
   executableSql: string;
   rationale: string;
-  contextMode: "retrieved" | "none";
+  contextMode: "retrieved" | "none" | "catalog";
+  generationMode?: GenerationMode;
+  plan?: MetricPlan;
+  definition?: string;
   snippets: { id: string; text: string; score: number }[];
 };
 export class ApiRequestError extends Error {
@@ -57,15 +63,26 @@ export function createApi(fetcher: typeof fetch = fetch) {
         throw new ApiRequestError("The API did not identify its mode.");
       return body as ApiHealth;
     },
-    async generate(question: string, signal?: AbortSignal): Promise<Proposal> {
+    async generate(
+      question: string,
+      signal?: AbortSignal,
+      generationMode: GenerationMode = "sql",
+    ): Promise<Proposal> {
       // No SQL, data, results, or browser-schema parameters exist here.
       const body = await read(
-        await fetcher("/api/generate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          signal,
-          body: JSON.stringify({ question, contextMode: "retrieved" }),
-        }),
+        await fetcher(
+          generationMode === "metrics" ? "/api/metrics" : "/api/generate",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            signal,
+            body: JSON.stringify(
+              generationMode === "metrics"
+                ? { question }
+                : { question, contextMode: "retrieved" },
+            ),
+          },
+        ),
       );
       if (
         !["live", "fixture"].includes(body.mode) ||
@@ -76,6 +93,20 @@ export function createApi(fetcher: typeof fetch = fetch) {
         throw new ApiRequestError(
           "The API returned an incomplete SQL proposal.",
         );
+      if (generationMode === "metrics") {
+        if (
+          body.generationMode !== "metrics" ||
+          typeof body.definition !== "string"
+        )
+          throw new ApiRequestError(
+            "The API returned an incomplete metric proposal.",
+          );
+        try {
+          parsePlan(body.plan);
+        } catch {
+          throw new ApiRequestError("The API returned an invalid metric plan.");
+        }
+      }
       return body as Proposal;
     },
   };

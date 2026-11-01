@@ -18,9 +18,11 @@ main {
   padding: 48px 28px 32px;
 }
 button,
+select,
 textarea {
   font: inherit;
 }
+select { padding: 9px 12px; border: 1px solid #b8cbc7; border-radius: 7px; background: white; color: inherit; }
 button {
   border: 1px solid #17665f;
   border-radius: 7px;

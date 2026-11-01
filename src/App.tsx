@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import { createApi, ApiRequestError } from "./api";
-import type { ApiHealth, Proposal } from "./api";
+import type { ApiHealth, Proposal, GenerationMode } from "./api";
 import { useDatabase } from "./use-database";
 import { displayTable, Results } from "./results";
 import type { DisplayResult } from "./results";
@@ -19,6 +19,7 @@ export default function App() {
   const [health, setHealth] = useState<ApiHealth | null>(null);
   const [apiError, setApiError] = useState("");
   const [question, setQuestion] = useState(examples[0]);
+  const [generationMode, setGenerationMode] = useState<GenerationMode>("sql");
   const [sql, setSql] = useState("");
   const [proposal, setProposal] = useState<
     (Proposal & { question: string }) | null
@@ -94,7 +95,11 @@ export default function App() {
     setProposal(null);
     setSql("");
     try {
-      const answer = await api.generate(question.trim(), controller.signal);
+      const answer = await api.generate(
+        question.trim(),
+        controller.signal,
+        generationMode,
+      );
       clearTimeout(timer);
       requestController.current = null;
       if (!mounted.current || operation.current !== current) return;
@@ -198,6 +203,23 @@ export default function App() {
       <section className="panel" aria-labelledby="question-heading">
         <h2 id="question-heading">Ask about the trips</h2>
         <form onSubmit={ask}>
+          <label htmlFor="generation-mode">Question mode</label>
+          <select
+            id="generation-mode"
+            value={generationMode}
+            disabled={Boolean(busy)}
+            onChange={(event) =>
+              setGenerationMode(event.target.value as GenerationMode)
+            }
+          >
+            <option value="sql">Flexible SQL</option>
+            <option value="metrics">Defined metrics</option>
+          </select>
+          <p className="muted">
+            {generationMode === "metrics"
+              ? "Four defined metrics: trip count, total metered fare, average distance, and card tip percentage. Group by day, hour, or pickup zone. January 2024 only; other requests may be declined."
+              : "Ask broader questions using generated SQL and retrieved dataset notes."}
+          </p>
           <label htmlFor="question">Your question</label>
           <textarea
             id="question"
@@ -265,9 +287,25 @@ export default function App() {
             </p>
             <p className="rationale">
               {edited
-                ? "You edited this SQL. The original AI rationale may no longer apply."
+                ? proposal.generationMode === "metrics"
+                  ? "You edited this SQL. The defined calculation no longer applies; the read-only SQL checks still run."
+                  : "You edited this SQL. The original AI rationale may no longer apply."
                 : proposal.rationale}
             </p>
+            {proposal.definition && (
+              <div className="notice">
+                <strong>
+                  {edited
+                    ? "Original metric definition"
+                    : "Defined calculation"}
+                </strong>
+                <p>{proposal.definition}</p>
+                <p>
+                  Check that these choices match your question. The model can
+                  still choose the wrong metric.
+                </p>
+              </div>
+            )}
           </>
         )}
         <label htmlFor="sql">Editable SQL</label>

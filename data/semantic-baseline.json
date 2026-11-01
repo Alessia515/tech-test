@@ -1,0 +1,16 @@
+{
+  "declaredAt": "2026-11-01T21:06:10.304Z",
+  "sourceCommitBeforeExtension": "410ad72",
+  "files": {
+    "shared/metrics.ts": "0169e04d0441069b2f9578e9319979c7743ec2b6280b8d0812f820e373c849a6",
+    "worker/semantic.ts": "36fa7c88183ebfcf405245ed1887a90e21cff9574875e30aca7d15c7e4eac8fa",
+    "worker/index.ts": "9679cf0c1ef8dde6e1c249907927fe581966255cc6b62eec42fb51e07b4d80eb",
+    "worker/retrieval.ts": "6fba537aff348df6884a02de4e5adcd935084e3fa1fd7512827c8bb8e41829df",
+    "worker/snippets.ts": "0e9ff93da279f22b4f3fe9eed6b77ecb5f27f925a0e4e86a6f99d4dec0c3b3ee",
+    "src/evaluate-metrics.ts": "dbae26f9a16c9e8a93ad8dd31df6c2192b4b03f00fe2e1c60d0ffcb531b2bfc9",
+    "src/compare-results.ts": "c530ebd833f6dfdc49309bdc8d85a8d84c682aa0ed01a0add9e7f24e225f0e90",
+    "src/sql-validator.ts": "dfea27c3da7f3bb4194c86ee4c7b55480c0089d1505576aad0700b7f3ce81a62",
+    "data/semantic-protocol.json": "ddc2dfd6d34b98fc7d7cabed64154e4cc61a3aed6db6a47b64d3b4072f29b42c",
+    "data/golden.json": "13ffd605ad5ea71b863df7f53929e93dabbd4c47fb0d3b92d3d4ede9e19c7c72"
+  }
+}

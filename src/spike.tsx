@@ -6,6 +6,7 @@ import { verifyReferenceQueries } from "./verify-reference";
 import { verifyValidator, verifyTimeoutRecovery } from "./verify-validator";
 import { runLiveEvaluation } from "./evaluate-live";
 import type { EvaluationRow } from "./evaluate-live";
+import { MetricsWorkbench } from "./metrics-workbench";
 
 async function runSpike(status: (message: string) => void) {
   const session = await loadDatabase(status);
@@ -151,6 +152,7 @@ function App() {
           </pre>
         )}
       </section>
+      <MetricsWorkbench />
     </main>
   );
 }
