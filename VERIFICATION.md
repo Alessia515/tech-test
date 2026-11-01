@@ -123,3 +123,9 @@ The frontend build retains a ~740 kB shared-chunk warning; dependency installati
 - Alternatively use **Run data spike** / **Run live golden comparison** at /verify.html. Recorded browser runs were driven via CUA; the CLI is a wrapper for the same page, not an additional claimed run.
 
 The initial PLAN.md remains unchanged. Scope changes and timing observations are in PROGRESS.md. Personal code rehearsal is in WALKTHROUGH.md; providing that guide does not certify the candidate's understanding.
+
+## Optional semantic-layer extension (later source version)
+
+The core scores above remain historical. See SEMANTIC-LAYER.md and data/semantic-first-attempt.json for a separate, predeclared 33-request comparison. Compiler execution passed 8/8 browser reference checks. Defined metrics answered 9/10 supported cases correctly, with one local-reload HTTP 503; a separately recorded recovery passed. One unsupported average-fare question wrongly selected average distance, demonstrating that valid plans can misinterpret intent. Designed coverage is 10/12 data-answerable cases; missing-data refusals passed 3/3 and metrics-only attacks 3/3. Flexible SQL answered 12/12 data-answerable cases in this batch. No accuracy improvement is claimed.
+
+Extension validation: 158 Node tests passed, types passed, frontend build and Worker dry-run passed. All 105 compatible catalog combinations pass the SQL guard; 23 incompatible combinations reject. The new verification skill was format-validated and used for these checks. Live evaluation ran through the browser workbench; pnpm evaluate:metrics is the reviewer wrapper, not an additional claimed run.

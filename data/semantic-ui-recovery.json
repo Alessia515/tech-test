@@ -1,0 +1,12 @@
+{
+  "recordedAt": "2026-11-01T21:08:24.110Z",
+  "kind": "Separate UI recovery check; not substituted into the first-attempt batch",
+  "question": "How many January trips were paid by credit card?",
+  "mode": "metrics",
+  "runtime": "live",
+  "expected": "2319036",
+  "observed": [
+    "2319036"
+  ],
+  "sql": "SELECT COUNT(*) AS trips FROM trips WHERE tpep_pickup_datetime >= TIMESTAMP '2024-01-01' AND tpep_pickup_datetime < TIMESTAMP '2024-02-01' AND payment_type = 1"
+}

@@ -1,0 +1,27 @@
+{
+  "report": "semantic-first-attempt.json",
+  "protocolCommit": "2567cb0",
+  "completeRequests": 33,
+  "automaticRetries": 0,
+  "compilerBrowserPreflight": { "passed": 8, "total": 8 },
+  "designedCoverage": { "supported": 10, "dataAnswerable": 12 },
+  "supportedFirstAttempt": { "correct": 9, "total": 10, "http503": 1 },
+  "wrongMetricOutsideCatalog": {
+    "case": "long-fare",
+    "requested": "average metered fare for trips over ten miles",
+    "selected": "avg_distance with long_distance filter",
+    "rationale": "Average fare unsupported",
+    "executedByEvaluator": false,
+    "scoring": "failed refusal, not a correct answer"
+  },
+  "interruptedRequest": {
+    "case": "cards",
+    "status": 503,
+    "observedWranglerLog": ["Reloading local server...", "POST /api/metrics 503 Service Unavailable (1314ms)", "Local server updated and ready"],
+    "diagnosis": "Local Wrangler reload while preparing the reviewer command interrupted a request. Browser JSON parsing then failed on the non-JSON development-server response.",
+    "separateRecoveryEvidence": "semantic-ui-recovery.json",
+    "originalScoreUnchanged": true
+  },
+  "manualBrowserCheck": { "editedSql": "SELECT 7 AS edited_value FROM trips LIMIT 1", "observed": "7", "badge": "Edited SQL", "message": "The defined calculation no longer applies; the read-only SQL checks still run." },
+  "limits": "No second full live batch. No statistical generalization or claim of improved accuracy. Historical core evaluation reports are unchanged."
+}

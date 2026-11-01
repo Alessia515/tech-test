@@ -187,3 +187,13 @@ Step 7 final checks:frontend production build and Worker dry-run bundle passed; 
 
 Final Step 8 checks:temporary clone server processes on5174/8790 stopped; main5173 API still reports live mode and the pinned model. Browser automation became unavailable during tab cleanup, so no claim that all temporary tabs were explicitly closed. Existing main app was verified through its local health API. Final type/build checks passed after copy-only label updates. First PLAN commit and unchanged contents verified; final local audit saved. No GitHub remote is configured. Final checkpoint recorded1 November2026 around22:36 Europe/Bucharest.
 
+
+## Optional extension: constrained generation
+
+- User approved the proposed verification skill and semantic-layer extension.
+- Committed extension plan and skill before implementation (2b1fb63), preserving original PLAN.md. Used skill-creator guidance; installed PyYAML only into ignored work/ for its format validator, which passed.
+- Added strict four-metric catalog, trusted compiler, metadata-only Worker route and visible UI mode/definition. Manual edits leave semantic calculations and retain SQL checks.
+- Used the new verification skill: 158 tests, type checks, frontend build, Worker dry-run; checked every catalog combination.
+- Committed exact evaluation protocol and source hashes before the live batch (2567cb0). Executed eight independent-answer compiler checks and 33 first-attempt live requests in the actual browser.
+- Recorded both failures: local reload interrupted cards (503); unsupported average fare selected average distance. No hidden retries or rewriting scores. Separate live UI recovery returned 2,319,036; manual SQL edit displayed Edited SQL and returned 7.
+- Findings in SEMANTIC-LAYER.md separate accuracy, designed coverage, refusal behavior and limits. Flexible SQL stayed the default. No deployment, publishing or paid-plan change.

@@ -76,3 +76,13 @@ The recorded revised run passed **10/10 golden questions with retrieval versus 9
 Cloudflare's [pricing page](https://developers.cloudflare.com/workers-ai/platform/pricing/) lists a daily free allowance; actual access/limits are account-dependent. No paid upgrade or domain purchase was used in this build. Dataset attribution: [NYC TLC](https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page), [field dictionary](https://www.nyc.gov/assets/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf).
 
 [PLAN.md](PLAN.md) is unchanged from the first commit. [PROGRESS.md](PROGRESS.md) records decisions/deviations. [WALKTHROUGH.md](WALKTHROUGH.md) is the interview preparation guide.
+
+## Optional extension: defined metrics
+
+Select **Defined metrics** above the question to use four trusted calculations rather than free-form SQL. Group by day, hour or numeric pickup zone; use a fixed payment or distance filter. The chosen definition remains visible beside editable SQL. Editing leaves the defined calculation, while the SELECT-only validator and query limits still apply. Flexible SQL remains the default.
+
+The model selects a JSON plan through POST /api/metrics; shared/metrics.ts validates choices and compiles SQL. Unsupported requests should be declined rather than approximated. Fixture mode uses explicitly canned plans for the same five examples. See SEMANTIC-LAYER.md for findings and coverage limits.
+
+The repository-local skill in .agents/skills/verify-talk-to-data/SKILL.md was added for this extension after the core build. It guides repeatable verification; it is not an application dependency.
+
+Optional live comparison: pnpm evaluate:metrics (33 model requests, actual browser execution, no automatic retries). Requires the live Worker, downloaded data and an installed browser as described above. It writes data/semantic-latest.json; recorded historical evidence is kept separately.
