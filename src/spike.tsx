@@ -97,7 +97,7 @@ function App() {
   }
   return (
     <main>
-      <p className="eyebrow">INTERVIEW BUILD · STEP 4</p>
+      <p className="eyebrow">VERIFICATION WORKBENCH</p>
       <h1>Talk to Your Data</h1>
       <p>
         Load January 2024 NYC yellow taxi trips locally and check the query

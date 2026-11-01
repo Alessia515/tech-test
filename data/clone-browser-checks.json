@@ -1,0 +1,850 @@
+{
+  "sourceCommit": "9eae8d4",
+  "provenance": "Fresh clone /verify.html fixed-query browser regression; no model calls",
+  "version": "v1.5.4",
+  "loadMs": 3575,
+  "summary": [
+    {
+      "raw_rows": "2964624",
+      "january_rows": "2964606",
+      "earliest_pickup": "2002-12-31 22:59:39",
+      "latest_pickup": "2024-02-01 00:01:15"
+    }
+  ],
+  "schema": [
+    {
+      "column_name": "VendorID",
+      "column_type": "INTEGER",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "tpep_pickup_datetime",
+      "column_type": "TIMESTAMP",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "tpep_dropoff_datetime",
+      "column_type": "TIMESTAMP",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "passenger_count",
+      "column_type": "BIGINT",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "trip_distance",
+      "column_type": "DOUBLE",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "RatecodeID",
+      "column_type": "BIGINT",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "store_and_fwd_flag",
+      "column_type": "VARCHAR",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "PULocationID",
+      "column_type": "INTEGER",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "DOLocationID",
+      "column_type": "INTEGER",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "payment_type",
+      "column_type": "BIGINT",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "fare_amount",
+      "column_type": "DOUBLE",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "extra",
+      "column_type": "DOUBLE",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "mta_tax",
+      "column_type": "DOUBLE",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "tip_amount",
+      "column_type": "DOUBLE",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "tolls_amount",
+      "column_type": "DOUBLE",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "improvement_surcharge",
+      "column_type": "DOUBLE",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "total_amount",
+      "column_type": "DOUBLE",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "congestion_surcharge",
+      "column_type": "DOUBLE",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    },
+    {
+      "column_name": "Airport_fee",
+      "column_type": "DOUBLE",
+      "null": "YES",
+      "key": null,
+      "default": null,
+      "extra": null
+    }
+  ],
+  "guards": [
+    {
+      "sql": "SELECT * FROM read_parquet('https://example.com/probe.parquet')",
+      "blocked": true,
+      "error": "Error: Permission Error: Cannot access file \"https://example.com/probe.parquet\" - file system operations are disabled by configuration\n\nLINE 1: SELECT * FROM read_parquet('https://example.com/probe.parquet')\n                      ^"
+    },
+    {
+      "sql": "SET enable_external_access = true",
+      "blocked": true,
+      "error": "Error: Invalid Input Error: Cannot change configuration option \"enable_external_access\" - the configuration has been locked"
+    }
+  ],
+  "referenceQueries": [
+    {
+      "id": "count",
+      "passed": true,
+      "rows": 1,
+      "actual": [
+        {
+          "trips": "2964606"
+        }
+      ]
+    },
+    {
+      "id": "daily",
+      "passed": true,
+      "rows": 31,
+      "actual": [
+        {
+          "day": "2024-01-01",
+          "trips": "81013"
+        },
+        {
+          "day": "2024-01-02",
+          "trips": "75519"
+        },
+        {
+          "day": "2024-01-03",
+          "trips": "82427"
+        },
+        {
+          "day": "2024-01-04",
+          "trips": "102901"
+        },
+        {
+          "day": "2024-01-05",
+          "trips": "103178"
+        },
+        {
+          "day": "2024-01-06",
+          "trips": "97117"
+        },
+        {
+          "day": "2024-01-07",
+          "trips": "67543"
+        },
+        {
+          "day": "2024-01-08",
+          "trips": "80034"
+        },
+        {
+          "day": "2024-01-09",
+          "trips": "93962"
+        },
+        {
+          "day": "2024-01-10",
+          "trips": "95000"
+        },
+        {
+          "day": "2024-01-11",
+          "trips": "105010"
+        },
+        {
+          "day": "2024-01-12",
+          "trips": "103655"
+        },
+        {
+          "day": "2024-01-13",
+          "trips": "104758"
+        },
+        {
+          "day": "2024-01-14",
+          "trips": "94420"
+        },
+        {
+          "day": "2024-01-15",
+          "trips": "77033"
+        },
+        {
+          "day": "2024-01-16",
+          "trips": "93057"
+        },
+        {
+          "day": "2024-01-17",
+          "trips": "110365"
+        },
+        {
+          "day": "2024-01-18",
+          "trips": "110358"
+        },
+        {
+          "day": "2024-01-19",
+          "trips": "95951"
+        },
+        {
+          "day": "2024-01-20",
+          "trips": "108768"
+        },
+        {
+          "day": "2024-01-21",
+          "trips": "84502"
+        },
+        {
+          "day": "2024-01-22",
+          "trips": "85650"
+        },
+        {
+          "day": "2024-01-23",
+          "trips": "99891"
+        },
+        {
+          "day": "2024-01-24",
+          "trips": "105120"
+        },
+        {
+          "day": "2024-01-25",
+          "trips": "110318"
+        },
+        {
+          "day": "2024-01-26",
+          "trips": "105804"
+        },
+        {
+          "day": "2024-01-27",
+          "trips": "110515"
+        },
+        {
+          "day": "2024-01-28",
+          "trips": "92837"
+        },
+        {
+          "day": "2024-01-29",
+          "trips": "84547"
+        },
+        {
+          "day": "2024-01-30",
+          "trips": "101233"
+        },
+        {
+          "day": "2024-01-31",
+          "trips": "102120"
+        }
+      ]
+    },
+    {
+      "id": "distance",
+      "passed": true,
+      "rows": 1,
+      "actual": [
+        {
+          "average_miles": 3.6521704907830275
+        }
+      ]
+    },
+    {
+      "id": "fare",
+      "passed": true,
+      "rows": 1,
+      "actual": [
+        {
+          "fare_dollars": 53881922.65999184
+        }
+      ]
+    },
+    {
+      "id": "cards",
+      "passed": true,
+      "rows": 1,
+      "actual": [
+        {
+          "trips": "2319036"
+        }
+      ]
+    },
+    {
+      "id": "tips",
+      "passed": true,
+      "rows": 1,
+      "actual": [
+        {
+          "tip_percent": 22.46768389447392
+        }
+      ]
+    },
+    {
+      "id": "pickups",
+      "passed": true,
+      "rows": 5,
+      "actual": [
+        {
+          "zone_id": 132,
+          "trips": "145240"
+        },
+        {
+          "zone_id": 161,
+          "trips": "143469"
+        },
+        {
+          "zone_id": 237,
+          "trips": "142707"
+        },
+        {
+          "zone_id": 236,
+          "trips": "136464"
+        },
+        {
+          "zone_id": 162,
+          "trips": "106717"
+        }
+      ]
+    },
+    {
+      "id": "hours",
+      "passed": true,
+      "rows": 24,
+      "actual": [
+        {
+          "hour": 0,
+          "trips": "79090"
+        },
+        {
+          "hour": 1,
+          "trips": "53627"
+        },
+        {
+          "hour": 2,
+          "trips": "37517"
+        },
+        {
+          "hour": 3,
+          "trips": "24811"
+        },
+        {
+          "hour": 4,
+          "trips": "16742"
+        },
+        {
+          "hour": 5,
+          "trips": "18764"
+        },
+        {
+          "hour": 6,
+          "trips": "41429"
+        },
+        {
+          "hour": 7,
+          "trips": "83719"
+        },
+        {
+          "hour": 8,
+          "trips": "117209"
+        },
+        {
+          "hour": 9,
+          "trips": "128970"
+        },
+        {
+          "hour": 10,
+          "trips": "138778"
+        },
+        {
+          "hour": 11,
+          "trips": "150542"
+        },
+        {
+          "hour": 12,
+          "trips": "164559"
+        },
+        {
+          "hour": 13,
+          "trips": "169903"
+        },
+        {
+          "hour": 14,
+          "trips": "182898"
+        },
+        {
+          "hour": 15,
+          "trips": "189359"
+        },
+        {
+          "hour": 16,
+          "trips": "190201"
+        },
+        {
+          "hour": 17,
+          "trips": "206257"
+        },
+        {
+          "hour": 18,
+          "trips": "212788"
+        },
+        {
+          "hour": 19,
+          "trips": "184032"
+        },
+        {
+          "hour": 20,
+          "trips": "159989"
+        },
+        {
+          "hour": 21,
+          "trips": "160888"
+        },
+        {
+          "hour": 22,
+          "trips": "143259"
+        },
+        {
+          "hour": 23,
+          "trips": "109275"
+        }
+      ]
+    },
+    {
+      "id": "long-fare",
+      "passed": true,
+      "rows": 1,
+      "actual": [
+        {
+          "average_fare": 62.8809445700366
+        }
+      ]
+    },
+    {
+      "id": "empty",
+      "passed": true,
+      "rows": 0,
+      "actual": []
+    }
+  ],
+  "validator": {
+    "attacks": [
+      {
+        "sql": "DROP TABLE trips",
+        "blocked": true,
+        "error": "SqlValidationError: Only SELECT queries are allowed."
+      },
+      {
+        "sql": "SELECT * FROM trips; DROP TABLE trips",
+        "blocked": true,
+        "error": "SqlValidationError: Only one SELECT statement is allowed."
+      },
+      {
+        "sql": "SELECT * FROM trips; SELECT * FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Only one SELECT statement is allowed."
+      },
+      {
+        "sql": "/* SELECT */ dRoP TABLE trips",
+        "blocked": true,
+        "error": "SqlValidationError: Only SELECT queries are allowed."
+      },
+      {
+        "sql": "SELECT 1; /* hidden */ COPY trips TO 'stolen.csv'",
+        "blocked": true,
+        "error": "SqlValidationError: SQL could not be parsed in the supported SELECT subset."
+      },
+      {
+        "sql": "WITH x AS (SELECT * FROM trips) SELECT * FROM x",
+        "blocked": true,
+        "error": "SqlValidationError: CTEs, window functions, and SELECT options are not supported."
+      },
+      {
+        "sql": "WITH x AS (DELETE FROM trips RETURNING *) SELECT * FROM x",
+        "blocked": true,
+        "error": "SqlValidationError: SQL could not be parsed in the supported SELECT subset."
+      },
+      {
+        "sql": "WITH RECURSIVE x AS (SELECT 1 UNION ALL SELECT 1 FROM x) SELECT * FROM x",
+        "blocked": true,
+        "error": "SqlValidationError: CTEs, window functions, and SELECT options are not supported."
+      },
+      {
+        "sql": "SELECT * FROM trips UNION ALL SELECT * FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Unsupported SQL option: _next."
+      },
+      {
+        "sql": "SELECT (SELECT count(*) FROM trips) FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Unsupported expression: undefined. Simplify the query."
+      },
+      {
+        "sql": "SELECT * FROM (SELECT * FROM trips) x",
+        "blocked": true,
+        "error": "SqlValidationError: Only the local trips table is allowed. File readers and table functions are blocked."
+      },
+      {
+        "sql": "SELECT * FROM trips t JOIN trips u ON t.PULocationID = u.PULocationID",
+        "blocked": true,
+        "error": "SqlValidationError: Query exactly one table: trips. Joins and subqueries are not supported."
+      },
+      {
+        "sql": "SELECT * FROM read_parquet('https://example.com/data.parquet')",
+        "blocked": true,
+        "error": "SqlValidationError: Only the local trips table is allowed. File readers and table functions are blocked."
+      },
+      {
+        "sql": "SELECT * FROM read_csv('/etc/passwd')",
+        "blocked": true,
+        "error": "SqlValidationError: Only the local trips table is allowed. File readers and table functions are blocked."
+      },
+      {
+        "sql": "SELECT * FROM glob('*')",
+        "blocked": true,
+        "error": "SqlValidationError: Only the local trips table is allowed. File readers and table functions are blocked."
+      },
+      {
+        "sql": "SELECT * FROM 'https://example.com/data.parquet'",
+        "blocked": true,
+        "error": "SqlValidationError: Only the local trips table is allowed. File readers and table functions are blocked."
+      },
+      {
+        "sql": "SELECT * FROM duckdb_tables()",
+        "blocked": true,
+        "error": "SqlValidationError: Only the local trips table is allowed. File readers and table functions are blocked."
+      },
+      {
+        "sql": "SELECT * FROM information_schema.tables",
+        "blocked": true,
+        "error": "SqlValidationError: Only the local trips table is allowed. File readers and table functions are blocked."
+      },
+      {
+        "sql": "SELECT * FROM main.trips",
+        "blocked": true,
+        "error": "SqlValidationError: Only the local trips table is allowed. File readers and table functions are blocked."
+      },
+      {
+        "sql": "SELECT read_blob('/etc/passwd') FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Function READ_BLOB is not allowed."
+      },
+      {
+        "sql": "SELECT query('DROP TABLE trips') FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Function QUERY is not allowed."
+      },
+      {
+        "sql": "SELECT query_table('trips') FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Function QUERY_TABLE is not allowed."
+      },
+      {
+        "sql": "SELECT getenv('HOME') FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Function GETENV is not allowed."
+      },
+      {
+        "sql": "SELECT nextval('counter') FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Function NEXTVAL is not allowed."
+      },
+      {
+        "sql": "SELECT setseed(0.5) FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Function SETSEED is not allowed."
+      },
+      {
+        "sql": "SELECT write_log('probe') FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Function WRITE_LOG is not allowed."
+      },
+      {
+        "sql": "SELECT main.abs(fare_amount) FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Unsupported SQL option: schema."
+      },
+      {
+        "sql": "SELECT \"read_blob\"('/etc/passwd') FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Function READ_BLOB is not allowed."
+      },
+      {
+        "sql": "ATTACH 'remote.db' AS remote",
+        "blocked": true,
+        "error": "SqlValidationError: SQL could not be parsed in the supported SELECT subset."
+      },
+      {
+        "sql": "COPY trips TO 'stolen.csv'",
+        "blocked": true,
+        "error": "SqlValidationError: SQL could not be parsed in the supported SELECT subset."
+      },
+      {
+        "sql": "COPY (SELECT * FROM trips) TO 'https://example.com/out'",
+        "blocked": true,
+        "error": "SqlValidationError: SQL could not be parsed in the supported SELECT subset."
+      },
+      {
+        "sql": "INSTALL httpfs",
+        "blocked": true,
+        "error": "SqlValidationError: SQL could not be parsed in the supported SELECT subset."
+      },
+      {
+        "sql": "LOAD httpfs",
+        "blocked": true,
+        "error": "SqlValidationError: SQL could not be parsed in the supported SELECT subset."
+      },
+      {
+        "sql": "PRAGMA enable_external_access=true",
+        "blocked": true,
+        "error": "SqlValidationError: SQL could not be parsed in the supported SELECT subset."
+      },
+      {
+        "sql": "SET enable_external_access=true",
+        "blocked": true,
+        "error": "SqlValidationError: Only SELECT queries are allowed."
+      },
+      {
+        "sql": "CREATE TABLE stolen AS SELECT * FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Only SELECT queries are allowed."
+      },
+      {
+        "sql": "UPDATE trips SET fare_amount=0",
+        "blocked": true,
+        "error": "SqlValidationError: Only SELECT queries are allowed."
+      },
+      {
+        "sql": "DELETE FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Only SELECT queries are allowed."
+      },
+      {
+        "sql": "SELECT * INTO stolen FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Unsupported SQL option: keyword."
+      },
+      {
+        "sql": "SELECT * FROM trips FOR UPDATE",
+        "blocked": true,
+        "error": "SqlValidationError: SQL could not be parsed in the supported SELECT subset."
+      },
+      {
+        "sql": "SELECT trip_distance FROM trips LIMIT 1 OFFSET 1",
+        "blocked": true,
+        "error": "SqlValidationError: OFFSET and compound LIMIT are unsupported."
+      },
+      {
+        "sql": "SELECT no_such_column FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Unknown column: no_such_column."
+      },
+      {
+        "sql": "SELECT other.fare_amount FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Unknown table qualifier."
+      },
+      {
+        "sql": "SELECT row_number() OVER () FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Unsupported expression: window_func. Simplify the query."
+      },
+      {
+        "sql": "SELECT repeat('x',1000000000) FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Function REPEAT is not allowed."
+      },
+      {
+        "sql": "SELECT * FROM range(1000000000)",
+        "blocked": true,
+        "error": "SqlValidationError: Only the local trips table is allowed. File readers and table functions are blocked."
+      },
+      {
+        "sql": "SELECT fare_amount::BLOB FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: SQL could not be parsed in the supported SELECT subset."
+      },
+      {
+        "sql": "SELECT count(*) FILTER (WHERE fare_amount > 0) FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Unsupported SQL option: filter."
+      },
+      {
+        "sql": "SELECT CASE WHEN fare_amount > 0 THEN 1 ELSE 0 END FROM trips",
+        "blocked": true,
+        "error": "SqlValidationError: Unsupported expression: case. Simplify the query."
+      },
+      {
+        "sql": "SELECT 1 FROM trips LIMIT 100001",
+        "blocked": true,
+        "error": "SqlValidationError: LIMIT must be an integer between 0 and 100000."
+      }
+    ],
+    "compatible": [
+      {
+        "sql": "/* header */ SeLeCt count(*) AS n FROM trips; -- trailing",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT COUNT(*) AS \"n\" FROM \"trips\" AS \"trips\") AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT * FROM trips LIMIT 5",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT * FROM \"trips\" AS \"trips\" LIMIT 5) AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT t.fare_amount FROM trips AS t WHERE t.payment_type IN (1,2) LIMIT 2",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT \"t\".\"fare_amount\" FROM \"trips\" AS \"t\" WHERE (\"t\".\"payment_type\" IN (1, 2)) LIMIT 2) AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT \"PULocationID\", count(*) AS n FROM \"trips\" GROUP BY 1 ORDER BY n DESC LIMIT 5",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT \"PULocationID\", COUNT(*) AS \"n\" FROM \"trips\" AS \"trips\" GROUP BY 1 ORDER BY \"n\" DESC LIMIT 5) AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT round(avg(fare_amount),2) AS average FROM trips",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT ROUND(AVG(\"fare_amount\"), 2) AS \"average\" FROM \"trips\" AS \"trips\") AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT count(DISTINCT PULocationID) AS zones FROM trips",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT COUNT(DISTINCT \"PULocationID\") AS \"zones\" FROM \"trips\" AS \"trips\") AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT date_trunc('day',tpep_pickup_datetime) AS day, count(*) AS n FROM trips GROUP BY 1 ORDER BY 1",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT DATE_TRUNC('day', \"tpep_pickup_datetime\") AS \"day\", COUNT(*) AS \"n\" FROM \"trips\" AS \"trips\" GROUP BY 1 ORDER BY 1) AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT coalesce(passenger_count,0) AS passengers FROM trips LIMIT 1",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT COALESCE(\"passenger_count\", 0) AS \"passengers\" FROM \"trips\" AS \"trips\" LIMIT 1) AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT -fare_amount AS negative FROM trips LIMIT 1",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT (- \"fare_amount\") AS \"negative\" FROM \"trips\" AS \"trips\" LIMIT 1) AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT fare_amount FROM trips WHERE fare_amount IS NOT NULL AND NOT (payment_type = 1) LIMIT 1",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT \"fare_amount\" FROM \"trips\" AS \"trips\" WHERE ((\"fare_amount\" IS NOT NULL) AND (NOT (\"payment_type\" = 1))) LIMIT 1) AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT count(*) AS n FROM trips HAVING count(*) > 0",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT COUNT(*) AS \"n\" FROM \"trips\" AS \"trips\" HAVING (COUNT(*) > 0)) AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT DISTINCT payment_type FROM trips ORDER BY payment_type",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT DISTINCT \"payment_type\" FROM \"trips\" AS \"trips\" ORDER BY \"payment_type\") AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT '; DROP TABLE trips; --' AS text FROM trips LIMIT 1",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT '; DROP TABLE trips; --' AS \"text\" FROM \"trips\" AS \"trips\" LIMIT 1) AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT 'it''s a SELECT; DROP TABLE trips' AS text FROM trips LIMIT 1",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT 'it''s a SELECT; DROP TABLE trips' AS \"text\" FROM \"trips\" AS \"trips\" LIMIT 1) AS \"__result\" LIMIT 501"
+      },
+      {
+        "sql": "SELECT 'https://example.com/read_csv' AS text FROM trips LIMIT 1",
+        "passed": true,
+        "executableSql": "SELECT * FROM (SELECT 'https://example.com/read_csv' AS \"text\" FROM \"trips\" AS \"trips\" LIMIT 1) AS \"__result\" LIMIT 501"
+      }
+    ],
+    "resultCap": {
+      "rows": 500,
+      "truncated": true
+    }
+  },
+  "timeoutRecovery": {
+    "timeoutMessage": "Error: Query exceeded its time limit. The database was stopped; reload the dataset.",
+    "closedMessage": "Error: Database session ended. Reload the dataset to continue.",
+    "elapsedMs": 8,
+    "reloadedRows": "2964624"
+  }
+}

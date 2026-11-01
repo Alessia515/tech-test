@@ -168,3 +168,22 @@ Step 6 checkpoint recorded: 1 November 2026, approximately 21:30 Europe/Buchares
 
 Step 7 final checks:frontend production build and Worker dry-run bundle passed; no deployment. CLI exit status gates retrieved/application cases while retaining all no-context pass/fail results in its matrix. Checkpoint recorded1 November2026 around21:57 Europe/Bucharest.
 
+
+## Step 8 — Reviewer rehearsal and handoff (complete)
+
+- Added LF checkout rules and precise Node>=22.18 prerequisite, plus pnpm test/check convenience commands; committed9eae8d4 before cloning.
+- Fresh local clone used an initially empty package-content store:113 packages downloaded,zero reused; dataset freshly downloaded and SHA-256 verified. Dependency install/data/127 tests completed in20.590s.
+- Fixture result2,964,606 rendered324.097s after clone start (5m24s), including a sandbox networking timeout and host-server restart. Used isolated ports5174/8790 and matching origin/proxy settings. Node/pnpm/Edge were preinstalled; browser/CDN and registry metadata caches not cleared; Cloudflare signup/auth excluded.
+- Parsed original ISO timestamps as strings for the elapsed-time calculation, avoiding PowerShell automatic date conversion. The recorded positive duration is checked in data/setup-rehearsal.json.
+- Fresh clone passed frontend production build, Worker types and dry-run bundle. CUA drove the fixed-query browser regression from the clone:all10 reference queries,50 blocked cases,15 semantic-preservation cases,500-row cap and8ms observed timeout/reload passed. Browser driver initially timed out waiting for its report; state inspection showed completion and the existing result was saved without rerunning.
+- Audited first commit:PLAN.md only, unchanged since14c9550. Clone model-source hashes match the revised evaluation snapshot. Clone tracked files remained clean after checks.
+- Pattern scan of tracked/unignored files found no known credential assignments/private keys; scan is not a comprehensive secret guarantee. Credentials remain in Wrangler's external login store. No GitHub remote is configured.
+- Rewrote README for reviewer setup, condensed AI-USAGE to about half a page, and organized VERIFICATION around results/evidence/limitations. Original history remains in Git and this log. PLAN.md was not rewritten.
+- Added WALKTHROUGH.md with architecture, code boundaries, math, decisions, join/large-data changes and pairing exercises. This prepares the explanation but does not certify the candidate's personal understanding; rehearsal remains a human action.
+- Final copy-only UI refinements:singular note label and generic verification workbench heading. Core model/query behavior unchanged from the rehearsed clone.
+- Source, test/evaluation evidence and documentation are locally ready for review. No interview app deployment or GitHub publishing was performed; the candidate's Hello World sample is separate.
+- Step8 began around22:11 Europe/Bucharest. Timings are wall-clock observations; active effort was not separately measured. Final checkpoint follows.
+
+
+Final Step 8 checks:temporary clone server processes on5174/8790 stopped; main5173 API still reports live mode and the pinned model. Browser automation became unavailable during tab cleanup, so no claim that all temporary tabs were explicitly closed. Existing main app was verified through its local health API. Final type/build checks passed after copy-only label updates. First PLAN commit and unchanged contents verified; final local audit saved. No GitHub remote is configured. Final checkpoint recorded1 November2026 around22:36 Europe/Bucharest.
+

@@ -1,0 +1,29 @@
+{
+  "sourceCommit": "9eae8d4011fbad55677fefeddb45e215b57f3ec8",
+  "startedAt": "2026-11-01T22:15:20.3866841+02:00",
+  "tableVisibleAt": "2026-11-01T20:20:44.483Z",
+  "elapsedSecondsToTable": 324.097,
+  "installDownloadAndTestsSeconds": 20.59,
+  "node": "24.22.1",
+  "pnpm": "11.25.0",
+  "packagesDownloaded": 113,
+  "packagesReused": 0,
+  "datasetBytes": 49961641,
+  "mode": "fixture",
+  "testsPassed": 127,
+  "renderedResult": [
+    "2964606"
+  ],
+  "ports": {
+    "app": 5174,
+    "api": 8790
+  },
+  "prerequisites": [
+    "Node, pnpm and Microsoft Edge already installed",
+    "Registry metadata and browser/CDN cache not cleared",
+    "Empty package-content store, new node_modules, freshly downloaded dataset",
+    "Cloudflare account onboarding/auth excluded: fixture mode makes no model calls"
+  ],
+  "incident": "First Vite process started inside the execution sandbox could not be reached from the browser. Restarted the same clone server outside the sandbox; elapsed time includes timeout, restart, tool and interaction delays.",
+  "withinTenMinutes": true
+}

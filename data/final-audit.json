@@ -1,0 +1,41 @@
+{
+  "firstCommit": "14c95502db0b92364763a2347ad146a4a9a7a078",
+  "firstCommitContainsOnlyPlan": true,
+  "originalPlanUnchanged": true,
+  "deliverables": [
+    "PLAN.md",
+    "README.md",
+    "VERIFICATION.md",
+    "AI-USAGE.md"
+  ],
+  "credentialPatternFindings": [],
+  "credentialScanLimit": "Pattern scan of current tracked/unignored files, not a guarantee of absence of every possible secret",
+  "cloneModelSourceHashes": [
+    {
+      "file": "worker/index.ts",
+      "match": true
+    },
+    {
+      "file": "worker/retrieval.ts",
+      "match": true
+    },
+    {
+      "file": "worker/snippets.ts",
+      "match": true
+    },
+    {
+      "file": "shared/schema.ts",
+      "match": true
+    },
+    {
+      "file": "src/sql-validator.ts",
+      "match": true
+    },
+    {
+      "file": "data/golden.json",
+      "match": true
+    }
+  ],
+  "cloneTrackedFilesUnchangedAfterTests": true,
+  "gitRemotes": []
+}

@@ -1,87 +1,78 @@
 # Talk to Your Data
 
-The app connects plain-English questions to a Cloudflare Worker, retrieves dataset notes, generates SQL with Workers AI, validates it, and executes it locally in DuckDB-WASM. The SQL is visible and editable, with a separate local run button. Verification and clean-clone rehearsal are still in progress.
+Ask questions about January 2024 NYC yellow taxi trips. A Cloudflare Worker retrieves dataset documentation and asks Workers AI for SQL. The browser displays the SQL, validates it, and executes it locally with DuckDB-WASM. SQL is editable and every rerun is validated again.
 
-## Run the spike
+## Run locally
 
-Prerequisites: Node 22+, pnpm 11.25.0, a modern desktop browser, and internet access. If pnpm is missing, install it with `npm install --global pnpm@11.25.0`.
+Prerequisites: **Node 22.18+** (tested with 24.22.1), **pnpm 11.25.0**, a modern desktop browser, and internet access. If needed: `npm install --global pnpm@11.25.0`.
 
 ```sh
+git clone <repo-url> talk-to-your-data
+cd talk-to-your-data
 pnpm install --frozen-lockfile
 pnpm data
-pnpm dev
 ```
 
-Open http://127.0.0.1:5173. The dataset loads automatically. Start one Worker API mode in another terminal (see below), choose an example and click **Ask & run**. The badge identifies live AI or canned fixtures. Inspect or edit the SQL and use **Run SQL locally** to rerun it without calling the model. Expand **SQL executed locally** to see the exact validated, capped query. Editing SQL clears the previous result so it cannot be mistaken for a new answer.
-
-The ~50 MB Parquet file is checksum-verified and served locally; engine WASM files are bundled locally. DuckDB downloads its signed Parquet extension from extensions.duckdb.org during trusted initialization. Startup therefore is not offline. The separate http://127.0.0.1:5173/verify.html page retains the fixed-query data/validator spike used by `pnpm test:spike`.
-
-The app materializes an in-memory `trips` table, drops the registered source file, disables external access, and locks configuration. Every generated/edited query uses the same runner, which validates and reconstructs SQL, caps displayed results at 500 rows, and terminates its worker on a ten-second timeout. Cancel stops generation waiting, or terminates the database if a local query is running. Use **Reload dataset** after database termination. Ordinary query errors leave the session usable.
-
-## Reproduce checks
-
-With the dev server running:
-
-```sh
-pnpm inspect:data
-pnpm reference:data
-pnpm test:validator
-pnpm test:spike
-pnpm build
-```
-
-The browser test uses installed Microsoft Edge on Windows. Elsewhere, run `pnpm exec playwright install chromium` first. Set `BROWSER_CHANNEL` to `chrome` or `msedge` if you want to use another installed supported browser.
-
-`inspect:data` writes the native schema/count inspection; `reference:data` calculates ten expected answers in JavaScript from raw columns. `test:validator` tests parsed SQL and query lifecycle; `test:spike` checks validated browser SQL results, 50 rejected and 15 accepted cases, runtime restrictions, result capping, and a real worker timeout/reload. The spike loads the dataset three times to test recovery; use it as verification rather than a normal user flow. These checks do not yet test model output.
-
-The supported subset is intentionally small: one trips table, standard comparisons/arithmetic, IN, NULL checks, grouping, sorting, simple casts, date extraction, COUNT/SUM/AVG/MIN/MAX, and a few approved scalar functions. CTEs, joins, subqueries, UNION, windows, CASE, FILTER, OFFSET, custom functions/types and backslash string escapes are rejected. Use standard SQL single-quote doubling. See src/sql-validator.ts for the explicit allowlist and VERIFICATION.md for its limits.
-
-Dependencies are pinned in package.json and pnpm-lock.yaml. `@duckdb/node-api` is development-only; it reads the dataset for verification, not as part of the app or Worker. Downloaded Parquet, build output, and dependencies are ignored by Git. No clean-clone timing claim has been established yet.
-
-## Worker API (Step 5)
-
-Start one API mode in a second terminal, alongside `pnpm dev`:
-
-```sh
-# No account or model calls; five exact canned questions only:
-pnpm worker:fixture
-```
-
-Fixture mode has its own configuration with **no AI binding**. GET http://127.0.0.1:5173/api/health lists its five supported example questions and identifies the mode. `pnpm test:worker:http` checks them through the actual Worker and Vite proxy. Fixture success is not live-generation evidence.
-
-For live generation, use a Cloudflare Free account and complete Workers setup in the dashboard. If an old `/workers/onboarding` link gives 404, use Workers & Pages in the dashboard; do not assume a purchase or paid plan is needed. This account completed onboarding through the Hello World flow; that sample Worker is separate from the interview app. Wrangler login opens Cloudflare's consent screen and stores credentials outside this repository:
+For **live generation**, use a Cloudflare account with Workers AI access. Complete Workers setup in the dashboard, then authorize Wrangler:
 
 ```sh
 pnpm exec wrangler login --scopes account:read user:read workers:write workers_scripts:write ai:write
-# Stop the fixture API before using the same port:
 pnpm worker:live
-pnpm smoke:live
 ```
 
-Both normal API commands use loopback port 8787. During development we also run live on 8788 to keep the fixture API available; in that case set API_BASE=http://127.0.0.1:8788 for the smoke script. The Vite proxy targets 8787 by default. No live failure silently falls back to fixtures.
+In a second terminal:
 
-To point the app at a different local API, set API_TARGET before starting Vite. Current development session uses API_TARGET=http://127.0.0.1:8788 and shows **Live AI**. For PowerShell: `$env:API_TARGET='http://127.0.0.1:8788'; pnpm dev`. For POSIX shells: `API_TARGET=http://127.0.0.1:8788 pnpm dev`. A fresh setup with the documented default ports needs no API_TARGET variable.
+```sh
+pnpm dev
+```
 
-Live smoke evidence is in data/live-smoke.json and data/live-smoke-none.json. The first is a real retrieved-context model response, the second the same question without notes. Both passed SQL validation; the script does not execute the query. Set CONTEXT_MODE=none to reproduce the second request. One basic count question is not evidence that retrieval improves accuracy; the broader comparison is pending.
+Open **http://127.0.0.1:5173/**, wait for the dataset to load, and choose **Ask & run**. Inspect or edit the SQL and use **Run SQL locally** without another model call. **SQL executed locally** shows the exact validated, capped query. Cancel stops generation waiting or terminates an executing database worker; reload the dataset after termination.
 
-Model ID: `@cf/meta/llama-3.3-70b-instruct-fp8-fast`, configurable as MODEL_ID in wrangler.jsonc. MODE, MODEL_ID and FRONTEND_ORIGIN are nonsecret Worker variables. AI is a remote Workers AI binding; even local Worker execution needs internet/account authorization for inference. No application API key is required when using the binding. Secrets, if added, belong in Wrangler bindings or ignored .dev.vars, never Vite/browser variables.
+For a **credential-free setup check**, use `pnpm worker:fixture` instead of `worker:live`. This mode has no AI binding and serves only the five exact examples below as canned SQL. The app labels it clearly. It is not evidence of live model generation, and live failures never fall back to it. Run only one mode on the default API port (8787).
 
-Endpoints:
+Fresh-clone rehearsal: **5m 24s to a rendered fixture result**, including a sandbox networking timeout/restart. Dependency installation from an empty package-content store, fresh dataset download, and 127 tests took about 21s. Node/pnpm/Edge were already installed; registry metadata/browser/CDN caches were not cleared. Cloudflare signup/login was excluded. Details: [setup evidence](data/setup-rehearsal.json).
 
-- GET `/api/health`: mode, model, binding presence, fixture examples. Binding presence alone does not prove inference access.
-- POST `/api/generate`: JSON `{ "question": "How many trips had pickups in January 2024?", "contextMode": "retrieved" }`. Optional contextMode=`none` runs the same model/schema/safety/time rules without retrieved notes for evaluation. It never changes to fixture mode.
-- A successful response contains proposed SQL, capped executable SQL, rationale, model/mode, and retrieved note IDs/text/scores. Rejected model SQL returns HTTP 422 with the inspectable proposal and validation reason. Missing-data refusals return a readable explanation. Model/network failures return explicit errors.
+## Example questions
 
-Only question and contextMode are accepted, with a 4096-byte body and 1000-character question cap. No dataset rows, query results, data previews, or browser-provided schema are accepted. Users can still paste arbitrary content into free text; the app cannot prove a question contains no rows. The Worker logs no request bodies, prompts or SQL itself. The only outbound model payload contains the question, static schema, fixed rules and up to four of 18 curated notes. It imports neither Parquet nor the golden expected results. Lexical retrieval is deterministic and inspectable; no Vectorize provisioning is required.
+These five work in fixture mode and were also exercised as live questions or equivalent golden questions:
 
-API checks: `pnpm test:worker`, `pnpm check:worker`, `pnpm build:worker`. The last command bundles with `--dry-run`; it does not deploy. The compatibility date is pinned to 2026-10-30, supported by the pinned local runtime. pnpm-workspace.yaml permits only the pinned esbuild/workerd install scripts needed by Wrangler.
+1. How many trips had pickups in January 2024?
+2. What was the average recorded trip distance in January?
+3. How many January trips were paid by credit card?
+4. What was the total metered fare in January?
+5. What were the five busiest pickup zone IDs in January?
 
-As checked on 1 November 2026, Workers AI Free includes 10,000 Neurons/day and requests stop at the free limit; our model is not among the listed paid-only models. See https://developers.cloudflare.com/workers-ai/platform/pricing/. Model timeout is a 30-second response-wait limit; it does not guarantee provider-side cancellation. This is a local prototype, without public authentication or distributed rate limiting; public hosting needs that separate decision.
+Additional live questions: “How many trips were picked up each day in January?” and “What was the January card tip rate?” Borough names and actual cash tips are unavailable; the app should explain that limitation.
 
-## Recorded model evaluation
+## Verify
 
-The revised recorded run passed all ten golden questions with retrieval, versus nine without; four additional semantic cases passed four versus zero. Three attack prompts were blocked. See VERIFICATION.md for the original failures, scorer correction, full comparison, and remaining vocabulary/memory/runtime limitations. Passing this small set is not a general correctness guarantee.
+```sh
+pnpm test                 # 127 Node tests; no inference calls
+pnpm check                # frontend and Worker types
+pnpm build
+pnpm build:worker         # bundle only: --dry-run, no deployment
+```
 
-`pnpm evaluate:live` drives verify.html, makes 31 model requests, executes table answers locally, saves data/evaluation-latest.json, and prints pass/fail summaries. It exits nonzero if a retrieved-mode case fails; no-context control failures remain visible in the comparison matrix. Fixtures are refused. For checks with no inference calls, use `pnpm test:validator`, `pnpm test:worker`, `pnpm test:api`, and `pnpm test:comparison` (127 tests across them). Original and revised evidence files are kept separately rather than overwritten.
+With Vite running, `pnpm test:spike` drives **/verify.html**: ten reference queries, 50 rejected SQL cases, 15 accepted semantic-preservation cases, runtime restrictions, truncation, and real worker timeout/recovery. It uses Edge on Windows; elsewhere run `pnpm exec playwright install chromium` first. BROWSER_CHANNEL can select an installed supported browser.
 
-The runtime scripts use separate .wrangler/live and .wrangler/fixture state paths. This avoids the shared-state lock observed when both development modes were running during reload; only one API mode on the default port is needed for ordinary use. If the local API fails before generation, restart the appropriate Worker and check /api/health; do not treat a fixture fallback as live success.
+With the API in live mode, `pnpm evaluate:live` makes **31 inference requests**, runs generated table queries in browser DuckDB, writes data/evaluation-latest.json, and prints the paired results. Its exit status gates retrieved-mode failures; no-context control failures stay visible. Fixtures are refused. APP_BASE and EVALUATION_OUTPUT override its app URL/output file.
+
+The recorded revised run passed **10/10 golden questions with retrieval versus 9/10 without**, and **4/4 supplemental semantic cases versus 0/4**. Three malicious prompts were blocked. [VERIFICATION.md](VERIFICATION.md) preserves the original failures, scorer audit, limits, and exact evidence. These small-set results do not establish arbitrary-question reliability.
+
+`pnpm inspect:data` regenerates schema/count inspection; `pnpm reference:data` independently aggregates expected answers in JavaScript. Review metric definitions before changing golden expectations; never regenerate them merely to match model output.
+
+## Configuration and boundaries
+
+- Model: **@cf/meta/llama-3.3-70b-instruct-fp8-fast**, configurable as MODEL_ID in wrangler.jsonc. Temperature 0; maximum output 800 tokens.
+- Bindings/variables: AI is a remote Workers AI binding. MODE, MODEL_ID, FRONTEND_ORIGIN are nonsecret variables. Wrangler login stores credentials outside the repo. Any future secrets belong in bindings/ignored .dev.vars files, never Vite variables.
+- GET /api/health identifies mode/model. POST /api/generate accepts only question and optional contextMode (`retrieved` or `none`), capped at 4096 body bytes / 1000 question characters. No dataset rows, results, previews, or browser-supplied schema are accepted. Users can still paste data into free text; do not do that.
+- The Worker receives a static schema and up to four of 18 curated notes, never the Parquet or expected results. It proposes SQL only. Lexical retrieval weights rare terms more highly and exposes note IDs/text/scores.
+- The validator compiles a small parsed SELECT subset over trips. CTEs, joins, subqueries, UNION, windows, CASE/FILTER, OFFSET, arbitrary functions/types and external reads are rejected. Both server proposals and browser edits are untrusted.
+- The browser materializes one table, drops the source registration, disables external access, and locks configuration. Results cap at 500 rows; queries time out after 10s. Memory use is not strictly bounded. The 30s model wait does not prove provider-side cancellation.
+- The 49,961,641-byte Parquet download is checksum-pinned in data/manifest.json. Engine assets are local; a signed Parquet extension loads from DuckDB's CDN at startup. Offline startup is not supported.
+- API_TARGET overrides Vite's default http://127.0.0.1:8787 target. Current development uses live API 8788. PowerShell: `$env:API_TARGET='http://127.0.0.1:8788'; pnpm dev`; POSIX: `API_TARGET=http://127.0.0.1:8788 pnpm dev`. FRONTEND_ORIGIN must match the browser origin when changing the app port.
+- Live/fixture runtimes use separate ignored .wrangler state paths after an observed local SQLite lock. Node's DuckDB API is verification-only. This local prototype has no public authentication or distributed abuse controls.
+
+Cloudflare's [pricing page](https://developers.cloudflare.com/workers-ai/platform/pricing/) lists a daily free allowance; actual access/limits are account-dependent. No paid upgrade or domain purchase was used in this build. Dataset attribution: [NYC TLC](https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page), [field dictionary](https://www.nyc.gov/assets/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf).
+
+[PLAN.md](PLAN.md) is unchanged from the first commit. [PROGRESS.md](PROGRESS.md) records decisions/deviations. [WALKTHROUGH.md](WALKTHROUGH.md) is the interview preparation guide.

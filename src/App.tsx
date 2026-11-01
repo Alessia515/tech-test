@@ -305,7 +305,8 @@ export default function App() {
         {proposal?.snippets.length ? (
           <details>
             <summary>
-              Dataset context used · {proposal.snippets.length} notes
+              Dataset context used · {proposal.snippets.length}{" "}
+              {proposal.snippets.length === 1 ? "note" : "notes"}
             </summary>
             <ul className="context-list">
               {proposal.snippets.map((item) => (
