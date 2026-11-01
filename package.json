@@ -4,10 +4,12 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=22"
+    "node": ">=22.18"
   },
   "packageManager": "pnpm@11.25.0",
   "scripts": {
+    "test": "node --experimental-strip-types --test tests/api.test.ts tests/worker.test.ts tests/validator.test.ts tests/comparison.test.ts",
+    "check": "tsc --noEmit && tsc --noEmit -p tsconfig.worker.json",
     "data": "node scripts/download-data.mjs",
     "dev": "vite --host 127.0.0.1",
     "build": "tsc --noEmit && vite build",

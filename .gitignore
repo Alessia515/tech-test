@@ -1,7 +1,7 @@
 node_modules/
 dist/
 public/data/*.parquet
-.dev.vars
+.dev.vars*
 .env*
 .wrangler/
 work/
