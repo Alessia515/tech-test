@@ -99,3 +99,24 @@ The sequence can change when evidence warrants it; record the reason here.
 
 Step 4 checkpoint recorded: 1 November 2026, approximately 20:54 Europe/Bucharest.
 
+
+## Step 5 — Worker retrieval and generation (complete)
+
+- Added an actual Cloudflare Worker with strict request/output contracts, health/provenance, clear refusals/errors, and server SQL validation. Browser-side validation remains mandatory for edited SQL.
+- Shared a schema-only module between validator and prompt. The Worker imports no dataset rows, golden answers, or observed aggregate inspection values.
+- Added18 curated snippets checked against TLC field documentation and deterministic top-four lexical retrieval. The no-context path retains fixed schema/time/safety rules.
+- Added five explicitly canned fixture questions in a separate config with no AI binding; no silent fallback from live failures.
+- Pinned Wrangler4.156.0 and exact allowed build scripts. Runtime startup caught unsupported current-date compatibility setting; corrected to2026-10-30, supported by the pinned binary.
+- Restarted the verified local Vite process for its new API proxy. Ten fixture HTTP requests passed via Worker/proxy, and two row-payload requests were rejected.
+- Candidate created/signed into Cloudflare Free and approved Wrangler OAuth. Wrangler onboarding link404 was resolved through current dashboard navigation; candidate deployed a separate Hello World sample. No interview app deployment by the agent.
+- Initial login missed workers_scripts:write; read-only subdomain check returned403/code10000. Candidate approved the additional scope; same check then returned200 and preview connected. No credential values printed or committed.
+- Initial model calls failed immediately; later calls succeeded without model/prompt-setting changes. Exact transient inference-failure cause remains unknown, not asserted as diagnosed.
+- Real retrieved-context smoke:HTTP200 in6,128ms, correct January COUNT SQL validated. No-context smoke:HTTP200 in2,190ms, equivalent COUNT with an alias difference. Outputs saved separately; generated queries not yet executed by the smoke scripts.
+- Retrieval weakness observed:generic how-many matching selected a cash-count example for an overall-count question. No wrong cash filter copied in this run. Broader retrieval-benefit evaluation is pending.
+-32 Worker tests plus82 validator tests passed;114 total. Both TypeScript checks and frontend build passed. Worker dry-run bundle passed; no deployment.
+- Updated setup instructions, verification and AI usage. All account/onboarding/approval waiting time is separate from any claimed active effort; active-time total remains unmeasured.
+- Step5 started around20:56:34 Europe/Bucharest. Checkpoint follows. Paused before Step6:question input, editable SQL and results UI.
+
+
+Step 5 checkpoint recorded: 1 November 2026, approximately 21:15 Europe/Bucharest.
+

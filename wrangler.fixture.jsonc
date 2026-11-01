@@ -1,0 +1,7 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "talk-to-your-data-fixture",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-10-30",
+  "vars": { "MODE": "fixture", "FRONTEND_ORIGIN": "http://127.0.0.1:5173" }
+}

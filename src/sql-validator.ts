@@ -1,13 +1,9 @@
 import postgres from 'node-sql-parser/build/postgresql.js';
+import { TRIPS_SCHEMA } from '../shared/schema.ts';
 
 export const SQL_MAX_LENGTH = 8_000;
 export const RESULT_LIMIT = 500;
-export const TRIP_COLUMNS = [
-  'VendorID', 'tpep_pickup_datetime', 'tpep_dropoff_datetime', 'passenger_count',
-  'trip_distance', 'RatecodeID', 'store_and_fwd_flag', 'PULocationID', 'DOLocationID',
-  'payment_type', 'fare_amount', 'extra', 'mta_tax', 'tip_amount', 'tolls_amount',
-  'improvement_surcharge', 'total_amount', 'congestion_surcharge', 'Airport_fee',
-];
+export const TRIP_COLUMNS: string[] = TRIPS_SCHEMA.map(([name]) => name);
 const parser = new postgres.Parser();
 const columns = new Map(TRIP_COLUMNS.map(name => [name.toLowerCase(), name]));
 const aggregates = new Set(['COUNT', 'SUM', 'AVG', 'MIN', 'MAX']);

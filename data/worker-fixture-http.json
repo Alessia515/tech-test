@@ -1,0 +1,108 @@
+{
+  "provenance": "local fixture only; no LLM called",
+  "report": [
+    {
+      "endpoint": "http://127.0.0.1:8787",
+      "question": "How many trips had pickups in January 2024?",
+      "status": 200,
+      "mode": "fixture",
+      "snippetIds": [
+        "example-cash",
+        "pickup-zone"
+      ]
+    },
+    {
+      "endpoint": "http://127.0.0.1:8787",
+      "question": "What was the average recorded trip distance in January?",
+      "status": 200,
+      "mode": "fixture",
+      "snippetIds": [
+        "distance",
+        "example-average"
+      ]
+    },
+    {
+      "endpoint": "http://127.0.0.1:8787",
+      "question": "How many January trips were paid by credit card?",
+      "status": 200,
+      "mode": "fixture",
+      "snippetIds": [
+        "example-cash",
+        "payment",
+        "example-average",
+        "total-charge"
+      ]
+    },
+    {
+      "endpoint": "http://127.0.0.1:8787",
+      "question": "What was the total metered fare in January?",
+      "status": 200,
+      "mode": "fixture",
+      "snippetIds": [
+        "fare",
+        "example-average"
+      ]
+    },
+    {
+      "endpoint": "http://127.0.0.1:8787",
+      "question": "What were the five busiest pickup zone IDs in January?",
+      "status": 200,
+      "mode": "fixture",
+      "snippetIds": [
+        "pickup-zone"
+      ]
+    },
+    {
+      "endpoint": "http://127.0.0.1:5173",
+      "question": "How many trips had pickups in January 2024?",
+      "status": 200,
+      "mode": "fixture",
+      "snippetIds": [
+        "example-cash",
+        "pickup-zone"
+      ]
+    },
+    {
+      "endpoint": "http://127.0.0.1:5173",
+      "question": "What was the average recorded trip distance in January?",
+      "status": 200,
+      "mode": "fixture",
+      "snippetIds": [
+        "distance",
+        "example-average"
+      ]
+    },
+    {
+      "endpoint": "http://127.0.0.1:5173",
+      "question": "How many January trips were paid by credit card?",
+      "status": 200,
+      "mode": "fixture",
+      "snippetIds": [
+        "example-cash",
+        "payment",
+        "example-average",
+        "total-charge"
+      ]
+    },
+    {
+      "endpoint": "http://127.0.0.1:5173",
+      "question": "What was the total metered fare in January?",
+      "status": 200,
+      "mode": "fixture",
+      "snippetIds": [
+        "fare",
+        "example-average"
+      ]
+    },
+    {
+      "endpoint": "http://127.0.0.1:5173",
+      "question": "What were the five busiest pickup zone IDs in January?",
+      "status": 200,
+      "mode": "fixture",
+      "snippetIds": [
+        "pickup-zone"
+      ]
+    }
+  ],
+  "extraFieldRejections": 2
+}

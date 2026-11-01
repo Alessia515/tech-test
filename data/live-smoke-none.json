@@ -1,0 +1,19 @@
+{
+  "verifiedAt": "2026-11-01T19:12:44.101Z",
+  "provenance": "one live Workers AI request; no dataset/query execution in this script",
+  "request": {
+    "question": "How many trips had pickups in January 2024?",
+    "contextMode": "none"
+  },
+  "status": 200,
+  "elapsedMs": 2190,
+  "response": {
+    "mode": "live",
+    "model": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+    "contextMode": "none",
+    "snippets": [],
+    "sql": "SELECT COUNT(*) FROM trips WHERE tpep_pickup_datetime >= TIMESTAMP '2024-01-01' AND tpep_pickup_datetime < TIMESTAMP '2024-02-01'",
+    "executableSql": "SELECT * FROM (SELECT COUNT(*) FROM \"trips\" AS \"trips\" WHERE ((\"tpep_pickup_datetime\" >= TIMESTAMP '2024-01-01') AND (\"tpep_pickup_datetime\" < TIMESTAMP '2024-02-01'))) AS \"__result\" LIMIT 501",
+    "rationale": "This query counts all trips with pickups in January 2024."
+  }
+}

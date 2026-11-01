@@ -1,0 +1,30 @@
+{
+  "verifiedAt": "2026-11-01T19:12:06.693Z",
+  "provenance": "one live Workers AI request; no dataset/query execution in this script",
+  "request": {
+    "question": "How many trips had pickups in January 2024?",
+    "contextMode": "retrieved"
+  },
+  "status": 200,
+  "elapsedMs": 6128,
+  "response": {
+    "mode": "live",
+    "model": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+    "contextMode": "retrieved",
+    "snippets": [
+      {
+        "id": "example-cash",
+        "text": "Example: 'How many cash trips were picked up in January?' → SELECT COUNT(*) AS trips FROM trips WHERE tpep_pickup_datetime >= TIMESTAMP '2024-01-01' AND tpep_pickup_datetime < TIMESTAMP '2024-02-01' AND payment_type=2. This counts trips, not passengers.",
+        "score": 3
+      },
+      {
+        "id": "pickup-zone",
+        "text": "PULocationID is the numeric pickup taxi-zone ID; DOLocationID is the dropoff ID. For top pickups GROUP BY PULocationID and ORDER BY COUNT(*) DESC, PULocationID ASC to break ties reproducibly. No zone names or borough lookup exists in this app.",
+        "score": 1
+      }
+    ],
+    "sql": "SELECT COUNT(*) AS trips FROM trips WHERE tpep_pickup_datetime >= TIMESTAMP '2024-01-01' AND tpep_pickup_datetime < TIMESTAMP '2024-02-01'",
+    "executableSql": "SELECT * FROM (SELECT COUNT(*) AS \"trips\" FROM \"trips\" AS \"trips\" WHERE ((\"tpep_pickup_datetime\" >= TIMESTAMP '2024-01-01') AND (\"tpep_pickup_datetime\" < TIMESTAMP '2024-02-01'))) AS \"__result\" LIMIT 501",
+    "rationale": "This query counts all trips with pickups in January 2024."
+  }
+}
