@@ -75,7 +75,7 @@ The recorded revised run passed **10/10 golden questions with retrieval versus 9
 
 Cloudflare's [pricing page](https://developers.cloudflare.com/workers-ai/platform/pricing/) lists a daily free allowance; actual access/limits are account-dependent. No paid upgrade or domain purchase was used in this build. Dataset attribution: [NYC TLC](https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page), [field dictionary](https://www.nyc.gov/assets/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf).
 
-[PLAN.md](PLAN.md) is unchanged from the first commit. [PROGRESS.md](PROGRESS.md) records decisions/deviations. [WALKTHROUGH.md](WALKTHROUGH.md) is the interview preparation guide.
+[PLAN.md](PLAN.md) is unchanged from the first commit. [Changes from the original plan](VERIFICATION.md#changes-from-the-original-plan) records the final scope decisions and their evidence.
 
 ## Optional extension: defined metrics
 

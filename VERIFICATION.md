@@ -122,7 +122,16 @@ The frontend build retains a ~740 kB shared-chunk warning; dependency installati
 - Start the live Worker, then `pnpm evaluate:live`: 31 inference requests, writes data/evaluation-latest.json and prints pass/fail. Exit status gates retrieved-mode failures; no-context failures remain visible. Fixtures are refused.
 - Alternatively use **Run data spike** / **Run live golden comparison** at /verify.html. Recorded browser runs were driven via CUA; the CLI is a wrapper for the same page, not an additional claimed run.
 
-The initial PLAN.md remains unchanged. Scope changes and timing observations are in PROGRESS.md. Personal code rehearsal is in WALKTHROUGH.md; providing that guide does not certify the candidate's understanding.
+The initial PLAN.md remains unchanged. Final scope decisions are summarized below. Detailed preparation notes were removed from the current submission; their earlier commits remain in Git history. The original plan's reference to PROGRESS.md describes that historical log.
+
+## Changes from the original plan
+
+- **Narrow SQL grammar:** parser and browser experiments justified rejecting all CTEs, joins, subqueries, windows and other unsupported syntax rather than attempting broader DuckDB compatibility. The validator attack and semantic-preservation results above establish the tested boundary.
+- **Startup dependency:** actual browser requests disproved the assumption that every engine asset was local. Parquet support loads a signed CDN extension during trusted initialization; offline startup remains unsupported.
+- **Retrieval and scoring revisions:** an omitted tip-ratio note prompted rare-term weighting and removal of generic cash-example triggers. A separate scorer mistake required allowing omitted counts for an IDs-only ranking question. Original reports and the explicit audit remain preserved; expected values were not changed to fit generated answers.
+- **Live access versus setup:** account onboarding, OAuth permissions and local runtime failures required investigation. Explicit fixture mode supports credential-free setup checks without substituting for live model evidence. Isolated live/fixture persistence paths address an observed SQLite lock. The recorded fresh-clone timing excludes Cloudflare onboarding.
+- **Optional extension after core completion:** a four-metric semantic layer and repository-local verification skill were planned in commit 2b1fb63, then implemented alongside flexible SQL. Its fixed compiler trades coverage for stable definitions; valid plan selection can still answer the wrong question. SEMANTIC-LAYER.md and the separate 33-request report retain the observed failures.
+- **Timing:** setup and evaluation durations above are measured observations. Total active development effort was not separately measured; wall-clock checkpoints included candidate pauses, approvals and tool waits. No precise total against the five-hour timebox is claimed.
 
 ## Optional semantic-layer extension (later source version)
 
