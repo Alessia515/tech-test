@@ -1,0 +1,33 @@
+{
+  "reviewDate": "2026-11-02",
+  "firstCommit": "14c95502db0b92364763a2347ad146a4a9a7a078",
+  "firstCommitFiles": [
+    "PLAN.md"
+  ],
+  "originalPlanUnchanged": true,
+  "datasetBytes": 49961641,
+  "datasetChecksumMatches": true,
+  "goldenQuestions": 10,
+  "semanticSourceHashesMatch": true,
+  "currentTests": 158,
+  "types": "passed",
+  "frontendBuild": "passed (shared-chunk size warning remains)",
+  "workerBundle": "passed --dry-run; not deployed",
+  "liveInferenceRerun": false,
+  "browserRegression": {
+    "goldenPassed": 10,
+    "goldenTotal": 10,
+    "attacksBlocked": 50,
+    "attacksTotal": 50,
+    "compatiblePassed": 15,
+    "compatibleTotal": 15,
+    "resultCap": {
+      "rows": 500,
+      "truncated": true
+    },
+    "runtimeGuardsBlocked": true,
+    "timeoutElapsedMs": 7,
+    "reloadedRawRows": "2964624"
+  },
+  "setupQualification": "Historical 324.097-second fixture-mode fresh clone with preinstalled prerequisites; no new clean clone or live onboarding benchmark in this review"
+}

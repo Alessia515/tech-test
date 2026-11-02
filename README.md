@@ -7,7 +7,7 @@ Ask questions about January 2024 NYC yellow taxi trips. A Cloudflare Worker retr
 Prerequisites: **Node 22.18+** (tested with 24.22.1), **pnpm 11.25.0**, a modern desktop browser, and internet access. If needed: `npm install --global pnpm@11.25.0`.
 
 ```sh
-git clone <repo-url> talk-to-your-data
+git clone https://github.com/Alessia515/tech-test.git talk-to-your-data
 cd talk-to-your-data
 pnpm install --frozen-lockfile
 pnpm data
@@ -47,7 +47,7 @@ Additional live questions: “How many trips were picked up each day in January?
 ## Verify
 
 ```sh
-pnpm test                 # 127 Node tests; no inference calls
+pnpm test                 # 158 Node tests; no inference calls
 pnpm check                # frontend and Worker types
 pnpm build
 pnpm build:worker         # bundle only: --dry-run, no deployment

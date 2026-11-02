@@ -197,3 +197,7 @@ Final Step 8 checks:temporary clone server processes on5174/8790 stopped; main51
 - Committed exact evaluation protocol and source hashes before the live batch (2567cb0). Executed eight independent-answer compiler checks and 33 first-attempt live requests in the actual browser.
 - Recorded both failures: local reload interrupted cards (503); unsupported average fare selected average distance. No hidden retries or rewriting scores. Separate live UI recovery returned 2,319,036; manual SQL edit displayed Edited SQL and returned 7.
 - Findings in SEMANTIC-LAYER.md separate accuracy, designed coverage, refusal behavior and limits. Flexible SQL stayed the default. No deployment, publishing or paid-plan change.
+
+## Requirements review — 2 November 2026
+
+Used verify-talk-to-data to compare the brief with the current repository. Reran 158 Node tests, both type checks, frontend build and Worker dry-run: passed. Actual-browser regression passed 10 reference queries, 50 rejected and 15 allowed SQL fixtures, cap, runtime guards and timeout/reload. Confirmed original first-commit plan and pinned dataset. Corrected README clone URL/test count and clarified which core setup evidence predates the extension. No inference rerun or new clean-clone/onboarding timing claim. Evidence and known limitations retained in VERIFICATION.md and new dated reports.
