@@ -1,0 +1,57 @@
+{
+  "startedAt": "2026-11-02T00:46:54.8220826+00:00",
+  "source": "https://github.com/Alessia515/tech-test.git",
+  "clonePath": "work/live-review-20261102",
+  "storePath": "work/live-review-store-20261102",
+  "appPort": 5175,
+  "apiPort": 8791,
+  "question": "How many trips had pickups in January 2024?",
+  "expected": "2964606",
+  "mode": "live",
+  "prerequisites": [
+    "Node 24.22.1, pnpm 11.25.0 and desktop browser already installed",
+    "Existing Cloudflare OAuth authorization and completed Workers setup",
+    "Empty package-content store; global registry metadata and browser/CDN caches not cleared"
+  ],
+  "automaticRetries": 0,
+  "sourceCommit": "a6502516d802038bdcad68a33fb21f24b95740c1",
+  "tableVisibleAt": "2026-11-02T00:48:46.639Z",
+  "elapsedSecondsToTable": 111.817,
+  "packagesDownloaded": 113,
+  "packagesReused": 0,
+  "datasetBytes": 49961641,
+  "datasetChecksumVerified": true,
+  "observedCells": [
+    "2964606"
+  ],
+  "sql": "SELECT COUNT(*) FROM trips WHERE tpep_pickup_datetime >= TIMESTAMP '2024-01-01' AND tpep_pickup_datetime < TIMESTAMP '2024-02-01'",
+  "model": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+  "generationRequests": 1,
+  "renderedExpectedResult": true,
+  "incidents": [],
+  "limitations": [
+    "Existing Cloudflare authorization reused; signup and interactive login not timed.",
+    "Nondefault ports avoid interrupting the main app; matching proxy and origin overrides used.",
+    "First result observation is an upper bound; includes tool and browser interaction time.",
+    "No claim for a cold computer or a reviewer account not yet provisioned."
+  ],
+  "withinTenMinutes": true,
+  "httpStatus": 200,
+  "workerGenerationMs": 6263,
+  "postResultChecks": {
+    "testsPassed": 158,
+    "testsFailed": 0,
+    "frontendTypes": "passed",
+    "workerTypes": "passed",
+    "cloneTrackedFilesClean": true
+  },
+  "warnings": [
+    "Nonessential Arrow CLI shim missing during install",
+    "DuckDB dependency sourcemaps reference source files outside their package"
+  ],
+  "cleanup": {
+    "temporaryBrowserTabClosed": true,
+    "isolatedServersStopped": true,
+    "mainAppNotStopped": true
+  }
+}

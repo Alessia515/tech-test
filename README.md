@@ -30,7 +30,9 @@ Open **http://127.0.0.1:5173/**, wait for the dataset to load, and choose **Ask 
 
 For a **credential-free setup check**, use `pnpm worker:fixture` instead of `worker:live`. This mode has no AI binding and serves only the five exact examples below as canned SQL. The app labels it clearly. It is not evidence of live model generation, and live failures never fall back to it. Run only one mode on the default API port (8787).
 
-Fresh-clone rehearsal: **5m 24s to a rendered fixture result**, including a sandbox networking timeout/restart. Dependency installation from an empty package-content store, fresh dataset download, and 127 tests took about 21s. Node/pnpm/Edge were already installed; registry metadata/browser/CDN caches were not cleared. Cloudflare signup/login was excluded. Details: [setup evidence](data/setup-rehearsal.json).
+Live fresh-clone rehearsal: **1m 52s to a real AI-generated table** from a new GitHub clone, with 113 packages downloaded / zero reused from an empty package-content store and a fresh checksum-verified dataset download. The first model request returned the correct January trip count. Node/pnpm/browser and existing Cloudflare authorization were prerequisites; signup/login and Workers account setup were excluded. Global registry metadata and browser/CDN caches were not cleared. Isolated ports and matching proxy/origin overrides avoided interrupting the main app. Details: [live setup evidence](data/live-setup-rehearsal.json). This measures setup on this machine with access already configured, not a new-account onboarding guarantee.
+
+An earlier credential-free fixture rehearsal took **5m 24s**, including a sandbox networking timeout/restart: [historical fixture evidence](data/setup-rehearsal.json).
 
 ## Example questions
 
